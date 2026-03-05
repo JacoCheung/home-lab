@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JJ-HOME 全屋智能方案 | 首页总览</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 移动端遮罩 -->
+  <div class="overlay" aria-hidden="true"></div>
+
+  <!-- 侧边栏 -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>JJ-HOME</h1>
+      <p class="subtitle">全屋智能方案 v1.0</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html"><span class="nav-icon">🏠</span> 首页总览</a>
+      <a href="products.html"><span class="nav-icon">📦</span> 产品目录</a>
+      <a href="shopping.html"><span class="nav-icon">🛒</span> 购物清单</a>
+      <a href="ha-setup.html"><span class="nav-icon">⚙️</span> HA配置</a>
+      <a href="automations.html"><span class="nav-icon">🔄</span> 自动化场景</a>
+      <a href="voice.html"><span class="nav-icon">🎤</span> 语音助手</a>
+      <a href="dashboard.html"><span class="nav-icon">📊</span> 3D仪表盘</a>
+      <a href="wiring.html"><span class="nav-icon">🔌</span> 布线指南</a>
+    </nav>
+  </aside>
+
+  <!-- 主内容区 -->
+  <main class="main">
+    <header class="header">
+      <button class="hamburger" aria-label="打开菜单">☰</button>
+      <h1 class="page-title">首页总览</h1>
+    </header>
+
+    <div class="content">
+      <!-- Hero 区域 -->
+      <section class="hero">
+        <h2>119平米 全屋智能家居方案</h2>
+        <p>Aqara + Home Assistant | 68个智能场景 | 3D交互仪表盘 | AI语音助手 | 本地优先</p>
+      </section>
+
+      <!-- 统计卡片 -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">68+</div>
+          <div class="stat-label">智能场景</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">~3.2万</div>
+          <div class="stat-label">预算（元）</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">6</div>
+          <div class="stat-label">实施阶段</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">30+</div>
+          <div class="stat-label">传感器</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">6个房间</div>
+          <div class="stat-label">覆盖范围</div>
+        </div>
+      </section>
+
+      <!-- 整体架构 -->
+      <section class="section-header">
+        <span class="section-icon">🏗️</span>
+        <h2>整体架构</h2>
+      </section>
+      <div class="card">
+        <h3>系统架构图</h3>
+        <div class="svg-diagram">
+          <svg viewBox="0 0 800 550" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+              <polygon points="0 0, 10 3.5, 0 7" fill="#38bdf8"/>
+            </marker>
+          </defs>
+          <!-- Layer 1: 控制层 -->
+          <rect x="50" y="20" width="700" height="95" rx="12" ry="12" fill="rgba(26, 34, 52, 0.9)" stroke="#38bdf8" stroke-width="2"/>
+          <text x="400" y="48" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="600">控制层</text>
+          <g fill="#94a3b8" font-size="12">
+            <rect x="95" y="58" width="52" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="121" y="73" text-anchor="middle">手机App</text>
+            <rect x="157" y="58" width="60" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="187" y="73" text-anchor="middle">3D仪表盘</text>
+            <rect x="227" y="58" width="52" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="253" y="73" text-anchor="middle">S1E面板</text>
+            <rect x="289" y="58" width="36" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="307" y="73" text-anchor="middle">旋钮</text>
+            <rect x="335" y="58" width="36" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="353" y="73" text-anchor="middle">语音</text>
+            <rect x="381" y="58" width="36" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="399" y="73" text-anchor="middle">NFC</text>
+          </g>
+          <!-- Arrow 1 -->
+          <line x1="400" y1="115" x2="400" y2="135" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <!-- Layer 2: 智能中枢 -->
+          <rect x="50" y="140" width="700" height="95" rx="12" ry="12" fill="rgba(26, 34, 52, 0.9)" stroke="#38bdf8" stroke-width="2"/>
+          <text x="400" y="168" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="600">智能中枢 Home Assistant (Mini PC N100)</text>
+          <g fill="#94a3b8" font-size="12">
+            <rect x="120" y="178" width="62" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="151" y="193" text-anchor="middle">Node-RED</text>
+            <rect x="192" y="178" width="48" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="216" y="193" text-anchor="middle">Ollama</text>
+            <rect x="250" y="178" width="48" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="274" y="193" text-anchor="middle">Frigate</text>
+            <rect x="308" y="178" width="48" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="332" y="193" text-anchor="middle">go2rtc</text>
+            <rect x="366" y="178" width="56" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="394" y="193" text-anchor="middle">Snapcast</text>
+          </g>
+          <!-- Arrow 2 -->
+          <line x1="400" y1="235" x2="400" y2="255" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <!-- Layer 3: 网关层 -->
+          <rect x="50" y="260" width="700" height="95" rx="12" ry="12" fill="rgba(26, 34, 52, 0.9)" stroke="#38bdf8" stroke-width="2"/>
+          <text x="400" y="288" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="600">网关层 Aqara M3</text>
+          <g fill="#94a3b8" font-size="12">
+            <rect x="140" y="298" width="48" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="164" y="313" text-anchor="middle">Zigbee</text>
+            <rect x="198" y="298" width="48" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="222" y="313" text-anchor="middle">Thread</text>
+            <rect x="256" y="298" width="36" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="274" y="313" text-anchor="middle">BLE</text>
+            <rect x="302" y="298" width="28" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="316" y="313" text-anchor="middle">IR</text>
+            <rect x="340" y="298" width="44" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="362" y="313" text-anchor="middle">Wi-Fi</text>
+            <rect x="394" y="298" width="60" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="424" y="313" text-anchor="middle">Ethernet</text>
+          </g>
+          <!-- Arrow 3 -->
+          <line x1="400" y1="355" x2="400" y2="375" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrowhead)"/>
+          <!-- Layer 4: 设备层 -->
+          <rect x="50" y="380" width="700" height="95" rx="12" ry="12" fill="rgba(26, 34, 52, 0.9)" stroke="#38bdf8" stroke-width="2"/>
+          <text x="400" y="408" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="600">设备层</text>
+          <g fill="#94a3b8" font-size="12">
+            <rect x="85" y="418" width="48" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="109" y="433" text-anchor="middle">灯光42</text>
+            <rect x="143" y="418" width="44" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="165" y="433" text-anchor="middle">灯带6</text>
+            <rect x="197" y="418" width="44" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="219" y="433" text-anchor="middle">开关14</text>
+            <rect x="251" y="418" width="44" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="273" y="433" text-anchor="middle">窗帘10</text>
+            <rect x="305" y="418" width="62" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="336" y="433" text-anchor="middle">传感器30+</text>
+            <rect x="377" y="418" width="36" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="395" y="433" text-anchor="middle">门锁</text>
+            <rect x="423" y="418" width="36" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="441" y="433" text-anchor="middle">门铃</text>
+            <rect x="469" y="418" width="44" height="22" rx="11" ry="11" fill="rgba(56, 189, 248, 0.15)" stroke="#38bdf8" stroke-width="1"/>
+            <text x="491" y="433" text-anchor="middle">摄像头</text>
+          </g>
+          </svg>
+        </div>
+      </div>
+
+      <!-- 核心设计原则 -->
+      <section class="section-header">
+        <span class="section-icon">💡</span>
+        <h2>核心设计原则</h2>
+      </section>
+      <div class="card">
+        <h3>设计理念</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>原则</th>
+                <th>说明</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>本地优先</td>
+                <td>核心逻辑本地运行，减少云端依赖，保障隐私与离线可用</td>
+              </tr>
+              <tr>
+                <td>多平台兼容</td>
+                <td>Aqara + Home Assistant + 第三方设备，统一中枢管理</td>
+              </tr>
+              <tr>
+                <td>AI驱动</td>
+                <td>Ollama 本地大模型 + 语音助手，智能场景与自然交互</td>
+              </tr>
+              <tr>
+                <td>可视化控制</td>
+                <td>3D 仪表盘、房间分区、一键场景，直观易用</td>
+              </tr>
+              <tr>
+                <td>渐进式部署</td>
+                <td>分阶段实施，每阶段可独立使用，灵活扩展</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 分阶段实施路线图 -->
+      <section class="section-header">
+        <span class="section-icon">🗺️</span>
+        <h2>分阶段实施路线图</h2>
+      </section>
+
+      <div class="phase-card">
+        <div class="phase-header">
+          <h3>Phase 1: 基础智能化</h3>
+          <div class="phase-meta">
+            <span class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star-empty">☆</span><span class="star-empty">☆</span><span class="star-empty">☆</span></span>
+            <span>1-2天</span>
+            <span>~20,000元</span>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li>安装 Aqara M3 网关及 Zigbee 设备</li>
+          <li>配置灯光、开关、窗帘等基础控制</li>
+          <li>完成 Aqara Home App 基础联动</li>
+          <li>测试各房间设备响应</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-header">
+          <h3>Phase 2: Home Assistant 中枢</h3>
+          <div class="phase-meta">
+            <span class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star-empty">☆</span><span class="star-empty">☆</span></span>
+            <span>1-2天</span>
+            <span>~500元</span>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li>部署 Home Assistant 于 Mini PC N100</li>
+          <li>接入 Aqara 设备并配置自动化</li>
+          <li>建立基础场景与联动规则</li>
+          <li>配置 Node-RED 流程（可选）</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-header">
+          <h3>Phase 3: 能耗与网络监控</h3>
+          <div class="phase-meta">
+            <span class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star-empty">☆</span></span>
+            <span>半天</span>
+            <span>~1,500元</span>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li>接入能耗监测设备（插座/电表）</li>
+          <li>配置网络监控与告警</li>
+          <li>搭建 Prometheus/Grafana 看板（可选）</li>
+          <li>能耗数据可视化</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-header">
+          <h3>Phase 4: DIY 传感器与进阶</h3>
+          <div class="phase-meta">
+            <span class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star-empty">☆</span></span>
+            <span>1-2天</span>
+            <span>~200元</span>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li>DIY 传感器（ESP32/ESPHome）接入</li>
+          <li>WLED 灯带、NFC 标签配置</li>
+          <li>Node-RED 进阶流程开发</li>
+          <li>第三方设备集成</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-header">
+          <h3>Phase 5: AI 语音助手</h3>
+          <div class="phase-meta">
+            <span class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></span>
+            <span>2-3天</span>
+            <span>~180元</span>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li>ESP32 语音模块 + 麦克风阵列</li>
+          <li>本地 Ollama 大模型部署</li>
+          <li>语音指令与 HA 场景对接</li>
+          <li>多房间 Snapcast 音频同步</li>
+        </ul>
+      </div>
+
+      <div class="phase-card">
+        <div class="phase-header">
+          <h3>Phase 6: 3D 仪表盘与高阶 AI</h3>
+          <div class="phase-meta">
+            <span class="difficulty"><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span><span class="star">★</span></span>
+            <span>3-5天</span>
+            <span>~0元</span>
+          </div>
+        </div>
+        <ul class="checklist">
+          <li>3D 户型图仪表盘搭建</li>
+          <li>Frigate 智能安防与人体检测</li>
+          <li>go2rtc 摄像头流接入</li>
+          <li>高阶 AI 场景与自动化优化</li>
+        </ul>
+      </div>
+
+      <!-- 预算汇总 -->
+      <section class="section-header">
+        <span class="section-icon">💰</span>
+        <h2>预算汇总</h2>
+      </section>
+      <div class="card">
+        <h3>费用明细</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>类别</th>
+                <th>金额（元）</th>
+                <th>占比</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Aqara 设备</td>
+                <td>~24,415</td>
+                <td>73.5%</td>
+              </tr>
+              <tr>
+                <td>第三方设备</td>
+                <td>~5,743</td>
+                <td>17.3%</td>
+              </tr>
+              <tr>
+                <td>DIY 硬件</td>
+                <td>~585</td>
+                <td>1.8%</td>
+              </tr>
+              <tr>
+                <td>窗帘轨道</td>
+                <td>~1,500</td>
+                <td>4.5%</td>
+              </tr>
+              <tr>
+                <td>网络设备</td>
+                <td>~995</td>
+                <td>3.0%</td>
+              </tr>
+              <tr>
+                <td><strong>总计</strong></td>
+                <td><strong>~33,238</strong></td>
+                <td>100%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="budget-bar" style="display: flex;">
+          <div class="fill" style="flex: 73.5; background: linear-gradient(90deg, var(--accent), var(--purple));"></div>
+          <div class="fill" style="flex: 17.3; background: var(--green);"></div>
+          <div class="fill" style="flex: 4.5; background: var(--yellow);"></div>
+          <div class="fill" style="flex: 3; background: var(--purple);"></div>
+          <div class="fill" style="flex: 1.8; background: var(--red);"></div>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 16px; margin-top: 12px; font-size: .8rem; color: var(--text-muted);">
+          <span><span style="display: inline-block; width: 10px; height: 10px; background: var(--accent); border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>Aqara 73.5%</span>
+          <span><span style="display: inline-block; width: 10px; height: 10px; background: var(--green); border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>第三方 17.3%</span>
+          <span><span style="display: inline-block; width: 10px; height: 10px; background: var(--yellow); border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>窗帘 4.5%</span>
+          <span><span style="display: inline-block; width: 10px; height: 10px; background: var(--purple); border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>网络 3%</span>
+          <span><span style="display: inline-block; width: 10px; height: 10px; background: var(--red); border-radius: 2px; vertical-align: middle; margin-right: 4px;"></span>DIY 1.8%</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

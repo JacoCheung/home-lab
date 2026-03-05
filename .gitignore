@@ -1,0 +1,13 @@
+.DS_Store
+*.swp
+*.swo
+*~
+.env
+node_modules/
+skills-lock.json
+
+# Cursor skills 中的大文件（字体/数据）不入库，只保留 SKILL.md
+.cursor/skills/*/canvas-fonts/
+.cursor/skills/*/*.csv
+.cursor/skills/*/*.ttf
+.cursor/skills/*/*.py

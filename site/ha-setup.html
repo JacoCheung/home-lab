@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JJ-HOME 全屋智能方案 | Home Assistant 配置</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 移动端遮罩 -->
+  <div class="overlay" aria-hidden="true"></div>
+
+  <!-- 侧边栏 -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>JJ-HOME</h1>
+      <p class="subtitle">全屋智能方案 v1.0</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html"><span class="nav-icon">🏠</span> 首页总览</a>
+      <a href="products.html"><span class="nav-icon">📦</span> 产品目录</a>
+      <a href="shopping.html"><span class="nav-icon">🛒</span> 购物清单</a>
+      <a href="ha-setup.html" class="active"><span class="nav-icon">⚙️</span> HA配置</a>
+      <a href="automations.html"><span class="nav-icon">🔄</span> 自动化场景</a>
+      <a href="voice.html"><span class="nav-icon">🎤</span> 语音助手</a>
+      <a href="dashboard.html"><span class="nav-icon">📊</span> 3D仪表盘</a>
+      <a href="wiring.html"><span class="nav-icon">🔌</span> 布线指南</a>
+    </nav>
+  </aside>
+
+  <!-- 主内容区 -->
+  <main class="main">
+    <header class="header">
+      <button class="hamburger" aria-label="打开菜单">☰</button>
+      <h1 class="page-title">Home Assistant 配置</h1>
+    </header>
+
+    <div class="content">
+      <!-- Hero 区域 -->
+      <section class="hero">
+        <h2>Home Assistant 安装与配置指南</h2>
+        <p>Mini PC (N100) + Docker 部署，集成 Aqara、Node-RED、HACS 等</p>
+      </section>
+
+      <!-- 一、硬件准备 -->
+      <section class="section-header">
+        <span class="section-icon">🖥️</span>
+        <h2>一、硬件准备</h2>
+      </section>
+      <div class="card">
+        <ul class="checklist">
+          <li><strong>Mini PC</strong>: Intel N100, 8GB RAM, 256GB SSD</li>
+          <li><strong>系统</strong>: Ubuntu Server 24.04 LTS 或 Debian 12</li>
+          <li><strong>网络</strong>: 有线连接到路由器（推荐固定 IP，例如 <code>192.168.1.10</code>）</li>
+        </ul>
+      </div>
+
+      <!-- 二、安装 Docker + Home Assistant -->
+      <section class="section-header">
+        <span class="section-icon">🐳</span>
+        <h2>二、安装 Docker + Home Assistant</h2>
+      </section>
+      <div class="card">
+        <h3>2.1 安装 Docker</h3>
+        <div class="code-wrapper">
+          <span class="code-label">bash</span>
+          <pre><code>curl -fsSL https://get.docker.com | sh
+sudo usermod -aG docker $USER
+# 重新登录使权限生效</code></pre>
+        </div>
+
+        <h3>2.2 创建 docker-compose.yml</h3>
+        <div class="code-wrapper">
+          <span class="code-label">yaml</span>
+          <pre><code>version: '3.8'
+
+services:
+  homeassistant:
+    container_name: homeassistant
+    image: ghcr.io/home-assistant/home-assistant:stable
+    volumes:
+      - ./ha-config:/config
+      - /etc/localtime:/etc/localtime:ro
+      - /run/dbus:/run/dbus:ro
+    restart: unless-stopped
+    privileged: true
+    network_mode: host
+
+  mosquitto:
+    container_name: mosquitto
+    image: eclipse-mosquitto:2
+    volumes:
+      - ./mosquitto/config:/mosquitto/config
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    ports:
+      - "1883:1883"
+      - "9001:9001"
+    restart: unless-stopped
+
+  nodered:
+    container_name: nodered
+    image: nodered/node-red:latest
+    volumes:
+      - ./nodered-data:/data
+    ports:
+      - "1880:1880"
+    restart: unless-stopped
+    depends_on:
+      - mosquitto
+
+  go2rtc:
+    container_name: go2rtc
+    image: alexxit/go2rtc:latest
+    network_mode: host
+    volumes:
+      - ./go2rtc:/config
+    restart: unless-stopped
+
+  pihole:
+    container_name: pihole
+    image: pihole/pihole:latest
+    ports:
+      - "53:53/tcp"
+      - "53:53/udp"
+      - "8080:80/tcp"
+    environment:
+      TZ: 'Asia/Shanghai'
+      WEBPASSWORD: 'changeme'
+    volumes:
+      - ./pihole/etc-pihole:/etc/pihole
+      - ./pihole/etc-dnsmasq.d:/etc/dnsmasq.d
+    restart: unless-stopped</code></pre>
+        </div>
+
+        <h3>2.3 启动</h3>
+        <div class="code-wrapper">
+          <span class="code-label">bash</span>
+          <pre><code>docker compose up -d</code></pre>
+        </div>
+        <p>访问 <code>http://192.168.1.10:8123</code> 完成 HA 初始设置。</p>
+      </div>
+
+      <!-- 三、集成 Aqara 设备 -->
+      <section class="section-header">
+        <span class="section-icon">🏠</span>
+        <h2>三、集成 Aqara 设备</h2>
+      </section>
+      <div class="card">
+        <h3>方式一：Matter（推荐）</h3>
+        <ol>
+          <li>Aqara M3 固件更新到最新版</li>
+          <li>Aqara Home App -> M3 -> 设置 -> Matter -> 生成配对码</li>
+          <li>HA -> 设置 -> 设备与服务 -> 添加集成 -> Matter</li>
+          <li>输入配对码，M3 下的所有设备将自动发现</li>
+        </ol>
+
+        <h3>方式二：HomeKit Controller</h3>
+        <ol>
+          <li>Aqara Home App -> M3 -> 设置 -> HomeKit -> 获取配对码</li>
+          <li>HA -> 设置 -> 设备与服务 -> 添加集成 -> HomeKit Controller</li>
+          <li>输入配对码</li>
+        </ol>
+
+        <h3>方式三：Aqara 官方集成（云端）</h3>
+        <ol>
+          <li>HA -> HACS -> 搜索 "Aqara" -> 安装</li>
+          <li>用 Aqara 账号登录授权</li>
+        </ol>
+
+        <p><em>推荐 Matter 方式：本地通信、低延迟、不依赖云端</em></p>
+      </div>
+
+      <!-- 四、安装 HACS -->
+      <section class="section-header">
+        <span class="section-icon">📦</span>
+        <h2>四、安装 HACS（自定义组件商店）</h2>
+      </section>
+      <div class="card">
+        <div class="code-wrapper">
+          <span class="code-label">bash</span>
+          <pre><code># 在 HA 容器内执行
+docker exec -it homeassistant bash
+wget -O - https://get.hacs.xyz | bash -
+# 重启 HA
+docker restart homeassistant</code></pre>
+        </div>
+        <p>重启后：HA -> 设置 -> 设备与服务 -> 添加集成 -> HACS -> 用 GitHub 账号授权</p>
+
+        <h3>必装 HACS 插件</h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>插件</th>
+                <th>用途</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Adaptive Lighting</td>
+                <td>昼夜节律自动调色温亮度</td>
+              </tr>
+              <tr>
+                <td>browser_mod</td>
+                <td>仪表盘弹出面板</td>
+              </tr>
+              <tr>
+                <td>tv-card</td>
+                <td>电视遥控器卡片</td>
+              </tr>
+              <tr>
+                <td>mini-media-player</td>
+                <td>迷你音乐播放器卡片</td>
+              </tr>
+              <tr>
+                <td>mushroom</td>
+                <td>现代风格仪表盘卡片</td>
+              </tr>
+              <tr>
+                <td>button-card</td>
+                <td>高度自定义按钮卡片</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 五、配置 Mosquitto MQTT -->
+      <section class="section-header">
+        <span class="section-icon">📡</span>
+        <h2>五、配置 Mosquitto MQTT</h2>
+      </section>
+      <div class="card">
+        <p>创建配置文件 <code>mosquitto/config/mosquitto.conf</code>:</p>
+        <div class="code-wrapper">
+          <span class="code-label">config</span>
+          <pre><code>listener 1883
+allow_anonymous false
+password_file /mosquitto/config/password.txt</code></pre>
+        </div>
+
+        <p>创建用户:</p>
+        <div class="code-wrapper">
+          <span class="code-label">bash</span>
+          <pre><code>docker exec -it mosquitto mosquitto_passwd -c /mosquitto/config/password.txt ha
+# 输入密码</code></pre>
+        </div>
+
+        <p>HA 中添加 MQTT 集成：设置 -> 集成 -> MQTT -> broker: <code>localhost</code>, 端口: 1883</p>
+      </div>
+
+      <!-- 六、配置 go2rtc -->
+      <section class="section-header">
+        <span class="section-icon">📹</span>
+        <h2>六、配置 go2rtc 摄像头流</h2>
+      </section>
+      <div class="card">
+        <p>创建 <code>go2rtc/go2rtc.yaml</code>:</p>
+        <div class="code-wrapper">
+          <span class="code-label">yaml</span>
+          <pre><code>streams:
+  living_room_cam:
+    - rtsp://admin:password@192.168.1.20:554/live
+  doorbell:
+    - rtsp://admin:password@192.168.1.21:554/live</code></pre>
+        </div>
+        <p>将 IP 和密码替换为实际的摄像头地址。go2rtc 启动后访问 <code>http://192.168.1.10:1984</code> 验证流是否正常。</p>
+      </div>
+
+      <!-- 七、关键 HA 配置文件 -->
+      <section class="section-header">
+        <span class="section-icon">⚙️</span>
+        <h2>七、关键 HA 配置文件</h2>
+      </section>
+      <div class="card">
+        <h3>configuration.yaml 补充</h3>
+        <div class="code-wrapper">
+          <span class="code-label">yaml</span>
+          <pre><code>homeassistant:
+  name: 我的智能家
+  unit_system: metric
+  time_zone: Asia/Shanghai
+  currency: CNY
+  latitude: !secret latitude
+  longitude: !secret longitude
+
+logger:
+  default: warning
+  logs:
+    homeassistant.components.automation: info
+
+input_boolean:
+  guest_mode:
+    name: 访客模式
+    icon: mdi:account-group
+  do_not_disturb:
+    name: 勿扰模式
+    icon: mdi:bell-off
+  away_mode:
+    name: 离家模式
+    icon: mdi:home-export-outline
+  sleep_mode:
+    name: 睡眠模式
+    icon: mdi:sleep
+  movie_mode:
+    name: 观影模式
+    icon: mdi:movie-open
+  party_mode:
+    name: 聚会模式
+    icon: mdi:party-popper
+  work_mode:
+    name: 多功能室工作模式
+    icon: mdi:desk
+  study_sleep_mode:
+    name: 多功能室睡眠模式
+    icon: mdi:bed
+
+input_select:
+  home_mode:
+    name: 家庭模式
+    options:
+      - 在家
+      - 离家
+      - 睡眠
+      - 观影
+      - 聚会
+      - 度假
+    initial: 在家
+    icon: mdi:home
+
+recorder:
+  purge_keep_days: 30
+  commit_interval: 5
+
+# 自适应照明（HACS 安装后）
+adaptive_lighting:
+  - name: "客厅"
+    lights:
+      - light.living_room_group
+    min_brightness: 20
+    max_brightness: 100
+    min_color_temp: 2700
+    max_color_temp: 6500
+    sleep_brightness: 5
+    sleep_color_temp: 2700
+  - name: "主卧"
+    lights:
+      - light.master_bedroom_group
+    min_brightness: 15
+    max_brightness: 80
+    min_color_temp: 2700
+    max_color_temp: 5000
+    sleep_brightness: 1
+    sleep_color_temp: 2700</code></pre>
+        </div>
+      </div>
+
+      <!-- 八、实用模板传感器 -->
+      <section class="section-header">
+        <span class="section-icon">📊</span>
+        <h2>八、实用 HA 模板传感器</h2>
+      </section>
+      <div class="card">
+        <p>在 <code>configuration.yaml</code> 中添加:</p>
+        <div class="code-wrapper">
+          <span class="code-label">yaml</span>
+          <pre><code>template:
+  - sensor:
+      - name: "全屋灯光开启数"
+        state: >
+          {{ states.light
+             | selectattr('state', 'eq', 'on')
+             | list | count }}
+
+      - name: "全屋窗帘状态"
+        state: >
+          {% set open = states.cover
+             | selectattr('state', 'eq', 'open')
+             | list | count %}
+          {% set total = states.cover | list | count %}
+          {{ open }}/{{ total }} 已开启
+
+      - name: "低电量设备"
+        state: >
+          {% set low = states.sensor
+             | selectattr('attributes.device_class', 'defined')
+             | selectattr('attributes.device_class', 'eq', 'battery')
+             | selectattr('state', 'lt', '20')
+             | list %}
+          {{ low | count }} 个设备电量低
+
+  - binary_sensor:
+      - name: "有人在家"
+        state: >
+          {{ is_state('binary_sensor.fp2_living_room', 'on')
+             or is_state('binary_sensor.fp2_master_bedroom', 'on')
+             or is_state('binary_sensor.fp2_study', 'on') }}</code></pre>
+        </div>
+      </div>
+
+      <!-- 九、Node-RED 集成 -->
+      <section class="section-header">
+        <span class="section-icon">🔄</span>
+        <h2>九、Node-RED 集成</h2>
+      </section>
+      <div class="card">
+        <p>HA 中安装 Node-RED Companion 集成:</p>
+        <ol>
+          <li>HACS -> 集成 -> 搜索 "Node-RED Companion" -> 安装</li>
+          <li>设置 -> 集成 -> 添加 Node-RED</li>
+        </ol>
+        <p>Node-RED 访问 <code>http://192.168.1.10:1880</code>，安装 HA 节点:</p>
+        <ul class="checklist">
+          <li>菜单 -> Manage palette -> Install -> <code>node-red-contrib-home-assistant-websocket</code></li>
+          <li>配置 HA 连接: <code>http://homeassistant:8123</code> + Long-Lived Access Token</li>
+        </ul>
+      </div>
+
+      <!-- 十、手机端配置 -->
+      <section class="section-header">
+        <span class="section-icon">📱</span>
+        <h2>十、手机端配置</h2>
+      </section>
+      <div class="card">
+        <h3>iOS / Android</h3>
+        <ol>
+          <li>安装 "Home Assistant" Companion App</li>
+          <li>输入 HA 地址: <code>http://192.168.1.10:8123</code>（局域网）</li>
+          <li>外网访问方案:
+            <ul>
+              <li>Nabu Casa 订阅（最简单，$6.5/月）</li>
+              <li>Cloudflare Tunnel（免费，需域名）</li>
+              <li>Tailscale/ZeroTier（免费 VPN 方案）</li>
+            </ul>
+          </li>
+        </ol>
+
+        <h3>NFC 标签</h3>
+        <ol>
+          <li>HA -> 设置 -> 标签 -> 创建新标签</li>
+          <li>手机 NFC 写入标签 ID</li>
+          <li>创建自动化: 触发器=标签扫描 -> 动作=切换场景</li>
+        </ol>
+      </div>
+
+      <!-- 下一步 -->
+      <section class="section-header">
+        <span class="section-icon">➡️</span>
+        <h2>下一步</h2>
+      </section>
+      <div class="card">
+        <ul class="checklist">
+          <li>配置自动化场景 -> 参见 <a href="automations.html">自动化场景</a></li>
+          <li>部署语音助手 -> 参见 <a href="voice.html">语音助手</a></li>
+          <li>制作 3D 仪表盘 -> 参见 <a href="dashboard.html">3D仪表盘</a></li>
+        </ul>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

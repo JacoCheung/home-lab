@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "3d-web-experience": {
+      "source": "liuchiawei/agent-skills",
+      "sourceType": "github",
+      "computedHash": "0d8ab488cd3320fbe88e0d276ad9786030a89a1772a325bd378610e0cb9483ef"
+    },
+    "canvas-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "a2fe47d24b3fd8e52faef731fff099c557e698083cd644b2e5695cc4dd8c7715"
+    },
+    "frontend-design": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "063a0e6448123cd359ad0044cc46b0e490cc7964d45ef4bb9fd842bd2ffbca67"
+    },
+    "scroll-experience": {
+      "source": "liuchiawei/agent-skills",
+      "sourceType": "github",
+      "computedHash": "67208408ab85e746309bd6de93d55f756b3fd05993b37355a6fe49c7874e8c90"
+    },
+    "theme-factory": {
+      "source": "anthropics/skills",
+      "sourceType": "github",
+      "computedHash": "93e78aa44f8fa00bb2c0608f400de1e1dcd6494611dd8ea27c867654240c7bcd"
+    },
+    "web-design-guidelines": {
+      "source": "liuchiawei/agent-skills",
+      "sourceType": "github",
+      "computedHash": "a6a44d5498f7e8f68289902f3dedfc6f38ae0cee1e96527c80724cf27f727c2a"
+    }
+  }
+}
