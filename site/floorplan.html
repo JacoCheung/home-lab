@@ -141,7 +141,7 @@
   const ROOM_POLYGONS = {
     '主卧':     { color:'#E74C3C', points:[[241,82],[417,82],[417,213],[241,213]] },
     '主卫':     { color:'#1ABC9C', points:[[417,82],[503,82],[503,195],[417,195]] },
-    '男孩房':   { color:'#3498DB', points:[[503,104],[628,104],[628,213],[503,213]] },
+    '儿童房':   { color:'#3498DB', points:[[503,104],[628,104],[628,213],[503,213]] },
     '客厅':     { color:'#2ECC71', points:[[241,223],[395,223],[395,371],[241,371]] },
     '餐厅':     { color:'#F39C12', points:[[395,213],[543,213],[543,340],[395,340]] },
     '厨房':     { color:'#E67E22', points:[[543,223],[654,223],[654,334],[543,334]] },
@@ -220,16 +220,16 @@
     { id:'mb-sw',   type:'switch_w', room:'主卫', name:'H1 Pro 单键',      model:'H1 Pro',      x:425,y:182, pos:'门口墙壁',          productId:'h1pro-double' },
     { id:'mb-wtr',  type:'water',    room:'主卫', name:'水浸传感器 T1',     model:'T1',          x:470,y:160, pos:'洗手台下方',        productId:'water-leak-t1' },
 
-    // === 男孩房 Boy's Room  x[503,628] y[104,213]  床头在西(上, y≈104) ===
-    { id:'b-t3',    type:'light',    room:'男孩房', name:'T3 筒射灯 ×6',   model:'T3 6W',       x:566,y:158, pos:'吊顶分散',          productId:'spotlight-t3', count:6 },
-    { id:'b-strip', type:'strip',    room:'男孩房', name:'灯带 T1',         model:'流光溢彩 T1', x:580,y:112, pos:'床头灯槽',          productId:'led-strip' },
-    { id:'b-dim',   type:'dimmer',   room:'男孩房', name:'调光模块 T1',     model:'T1',          x:568,y:112, pos:'暗藏',              productId:'dimmer-t1' },
-    { id:'b-sw',    type:'switch_w', room:'男孩房', name:'H1 Pro 双键',     model:'H1 Pro',      x:510,y:200, pos:'门口墙壁',          productId:'h1pro-double' },
-    { id:'b-swn',   type:'switch_n', room:'男孩房', name:'无线开关 H1',     model:'H1 双键',     x:560,y:118, pos:'床头柜',            productId:'wireless-h1' },
-    { id:'b-c3',    type:'curtain',  room:'男孩房', name:'C3 窗帘(北窗)',   model:'C3',          x:624,y:155, pos:'北窗帘',            productId:'curtain-c3' },
-    { id:'b-pir',   type:'pir',      room:'男孩房', name:'P2 人体传感器',   model:'P2',          x:600,y:200, pos:'天花板角落',        productId:'p2-sensor' },
-    { id:'b-temp',  type:'temp',     room:'男孩房', name:'温湿度传感器 T1', model:'T1',          x:595,y:118, pos:'床头柜旁',          productId:'temp-e1' },
-    { id:'b-voice', type:'voice',    room:'男孩房', name:'语音终端 ESP32',   model:'ESP32-S3',    x:510,y:206, pos:'墙面',              productId:null },
+    // === 儿童房 Children's Room  x[503,628] y[104,213]  床头在西(上, y≈104) ===
+    { id:'b-t3',    type:'light',    room:'儿童房', name:'T3 筒射灯 ×6',   model:'T3 6W',       x:566,y:158, pos:'吊顶分散',          productId:'spotlight-t3', count:6 },
+    { id:'b-strip', type:'strip',    room:'儿童房', name:'灯带 T1',         model:'流光溢彩 T1', x:580,y:112, pos:'床头灯槽',          productId:'led-strip' },
+    { id:'b-dim',   type:'dimmer',   room:'儿童房', name:'调光模块 T1',     model:'T1',          x:568,y:112, pos:'暗藏',              productId:'dimmer-t1' },
+    { id:'b-sw',    type:'switch_w', room:'儿童房', name:'H1 Pro 双键',     model:'H1 Pro',      x:510,y:200, pos:'门口墙壁',          productId:'h1pro-double' },
+    { id:'b-swn',   type:'switch_n', room:'儿童房', name:'无线开关 H1',     model:'H1 双键',     x:560,y:118, pos:'床头柜',            productId:'wireless-h1' },
+    { id:'b-c3',    type:'curtain',  room:'儿童房', name:'C3 窗帘(北窗)',   model:'C3',          x:624,y:155, pos:'北窗帘',            productId:'curtain-c3' },
+    { id:'b-pir',   type:'pir',      room:'儿童房', name:'P2 人体传感器',   model:'P2',          x:600,y:200, pos:'天花板角落',        productId:'p2-sensor' },
+    { id:'b-temp',  type:'temp',     room:'儿童房', name:'温湿度传感器 T1', model:'T1',          x:595,y:118, pos:'床头柜旁',          productId:'temp-e1' },
+    { id:'b-voice', type:'voice',    room:'儿童房', name:'语音终端 ESP32',   model:'ESP32-S3',    x:510,y:206, pos:'墙面',              productId:null },
 
     // === 多功能房 Multi-function Room  x[241,394] y[371,493] ===
     // 东墙(y≈488)无窗! 实墙结构: 左收纳柜(800) + 中壁床Murphy bed(1600) + 右收纳柜(1400)
