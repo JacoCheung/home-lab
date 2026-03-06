@@ -11,3 +11,9 @@ skills-lock.json
 .cursor/skills/*/*.csv
 .cursor/skills/*/*.ttf
 .cursor/skills/*/*.py
+
+# 大文件 / 临时文件
+*.dwg
+screenshot_test.py
+images/floorplan-base.svg.png
+images/floorplan.pdf.png

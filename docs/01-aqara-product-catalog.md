@@ -10,7 +10,8 @@
 | 产品 | 型号 | 参考价(元) | 协议 | 功能 | 购买链接 |
 |------|------|-----------|------|------|----------|
 | 方舟智慧中枢 M3 | HE-P60 | 989 | Zigbee/Thread/BLE/IR/Wi-Fi/Ethernet | 全协议中枢，自带红外，支持 Matter/HomeKit | [京东](https://item.jd.com/10094955670411.html) / [官网](https://www.aqara.cn/Hub-m3_overview) |
-| 智能网关 M2 | HM2-G01 | 399 | Zigbee/Wi-Fi/BLE/IR | 红外中枢，可做厨房区域补充 | [京东](https://item.jd.com/10020347605639.html) / [官网](https://www.aqara.cn/Hub-M2_overview) |
+
+> M3 内置 IR 已可覆盖客厅+厨房开放空间，无需再购买 M2 网关做 IR 补充。M2 为 2022 款老型号，新款 M200（更小更便宜）尚未在中国大陆上市。
 
 ## 智能开关
 
@@ -55,10 +56,10 @@
 
 | 产品 | 型号 | 参考价(元) | 协议 | 功能 | 购买链接 |
 |------|------|-----------|------|------|----------|
-| 智能可视门铃 G4 | ZNMS17LM | 699 | Wi-Fi | 1080p/162°/人脸识别/双向对讲/变声/本地存储 | [官网](https://www.aqara.cn/Smart-Video-Doorbell-G4_overview) / [京东旗舰店](https://mall.jd.com/index-771017.html) |
-| 智能摄像机 G3 网关版 | CH-H03 | 699 | Wi-Fi/Zigbee | 2K/360°全景/AI识别/手势/红外夜视/内置Zigbee网关 | [官网](https://www.aqara.cn/Camera-Hub-G3_overview) / [京东旗舰店](https://mall.jd.com/index-771017.html) |
+| 智能可视门铃 G410（网关版） | MSNDGQ01LM | 899 | Wi-Fi/Zigbee/Thread | 2K/175°/毫米波雷达/AI人脸/双向对讲/变声/Zigbee+Thread双网关 | [官网](https://www.aqara.cn/Smart-Video-Doorbell-G410_overview) / [京东旗舰店](https://mall.jd.com/index-771017.html) |
+| 智能摄像机 G5 Pro（网关版） | CH-C01 | 1,299 | Wi-Fi/Zigbee/Thread | 400万像素/133°/F1.0/7种AI识别/黑光全彩/IP65/内置32GB | [京东](https://item.jd.com/10136931524381.html) / [官网](https://www.aqara.cn/Camera-Hub-G5Pro_overview) |
 
-> 提示：Aqara 已推出新款 **智能可视门铃 G410（网关版）**，支持 2K+175° 超广角+毫米波雷达+Zigbee/Thread 双网关，建议优先考虑。
+> G410 为 G4 升级版（2025年7月上市），G5 Pro 为 G3 升级版（2025年2月上市），均已在中国大陆上市。
 
 ## 传感器
 

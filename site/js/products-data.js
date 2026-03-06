@@ -26,31 +26,29 @@ const PRODUCTS = {
     install: "放置在客厅电视柜或弱电箱附近，用网线连接路由器（推荐有线）。IR 遥控面对准空调/电视方向放置，避免放在金属柜子里。"
   },
   "m2-gateway": {
-    name: "M2 智能网关",
+    name: "（已移除）M2 网关为 2022 款老型号",
     model: "HM2-G01",
     price: 399,
     protocol: "Zigbee 3.0 / Wi-Fi / BLE / IR",
-    buyUrl: "https://item.jd.com/10020347605639.html",
-    buyLabel: "京东旗舰店",
+    buyUrl: "https://www.aqara.cn/Hub-M2_overview",
+    buyLabel: "Aqara 官网",
     features: [
-      "支持 Zigbee 子设备接入",
-      "内置红外发射器，控制红外家电",
-      "可做厨房区域 IR 补充覆盖",
-      "兼容 Apple HomeKit / Alexa"
+      "⚠️ 2022 年老款，已不建议购买",
+      "M3 内置 IR 已可覆盖客厅+厨房开放空间",
+      "新款 M200 尚未在中国大陆上市",
+      "如确需 IR 补充网关，可等待 M200 上市"
     ],
     specs: {
-      "尺寸": "73 × 73 × 25 mm",
-      "供电": "USB-C 5V/1A",
-      "Wi-Fi": "2.4 GHz",
-      "最大设备数": "128 台",
-      "IR 覆盖": "360° / 8m"
+      "状态": "老款，不建议购买",
+      "替代方案": "等待 Hub M200 上市"
     },
-    install: "放在厨房区域用于红外遥控补充覆盖，或作为 M3 的备用网关。"
+    install: "已从购物清单中移除。M3 自带 360° IR，开放式客厅+厨房布局无需额外 IR 网关。"
   },
   "h1pro-single": {
     name: "H1 Pro 零火单键",
     model: "QBKG38LM",
     price: 149,
+    image: "images/products/h1pro-switch.jpg",
     protocol: "Zigbee 3.0",
     buyUrl: "https://item.jd.com/10026305049589.html",
     buyLabel: "京东旗舰店",
@@ -72,6 +70,7 @@ const PRODUCTS = {
   "h1pro-double": {
     name: "H1 Pro 零火双键",
     model: "QBKG39LM",
+    image: "images/products/h1pro-switch.jpg",
     price: 179,
     protocol: "Zigbee 3.0",
     buyUrl: "https://item.jd.com/10026305049589.html",
@@ -93,6 +92,7 @@ const PRODUCTS = {
   "h1pro-triple": {
     name: "H1 Pro 零火三键",
     model: "QBKG40LM",
+    image: "images/products/h1pro-switch.jpg",
     price: 209,
     protocol: "Zigbee 3.0",
     buyUrl: "https://item.jd.com/10026305049589.html",
@@ -312,53 +312,62 @@ const PRODUCTS = {
     install: "需专业锁匠安装。购买时可预约 Aqara 上门安装服务。安装后在 App 中录入人脸、指纹、密码。"
   },
   "doorbell-g4": {
-    name: "G4 智能可视门铃",
-    model: "ZNMS17LM",
-    price: 699,
-    protocol: "Wi-Fi 2.4GHz",
-    buyUrl: "https://www.aqara.cn/Smart-Video-Doorbell-G4_overview",
+    name: "G410 智能可视门铃（网关版）",
+    model: "MSNDGQ01LM",
+    price: 899,
+    protocol: "Wi-Fi / Zigbee / Thread",
+    buyUrl: "https://www.aqara.cn/Smart-Video-Doorbell-G410_overview",
     buyLabel: "Aqara 官网",
     features: [
-      "1080p / 162° 超广角",
-      "AI 人脸识别，区分家人/访客",
+      "2K 高清 / 175° 超广角镜头",
+      "毫米波雷达侦测，精准识别来人意图，减少误报",
+      "本地 AI 人脸识别，区分家人/常客/陌生人",
       "双向对讲，支持变声",
+      "内置 Zigbee + Thread 双协议网关",
       "本地存储（MicroSD 最大512GB）",
-      "IP66 防水等级",
-      "含室内门铃+Wi-Fi 中继器"
+      "8颗 940nm 红外补光灯，夜视增强",
+      "支持 HomeKit 安防视频 / Matter"
     ],
     specs: {
-      "分辨率": "1080p",
-      "视角": "162°",
-      "电池": "6节AA / 有线12-24V",
-      "续航": "约4个月（电池模式）",
-      "存储": "MicroSD / 7天免费云存储"
+      "分辨率": "2K",
+      "视角": "175°",
+      "雷达": "毫米波雷达",
+      "网关": "Zigbee 3.0 + Thread",
+      "Wi-Fi": "双频 2.4/5 GHz",
+      "电池": "可充电锂电池 / 有线供电",
+      "存储": "MicroSD 最大512GB / iCloud / NAS"
     },
-    install: "安装在入户门外侧，门框旁1.3-1.5m高度。3M 胶粘或螺丝固定底座。新款 G410（2K+175°+毫米波+Zigbee/Thread网关）已上市，推荐优先考虑。"
+    install: "安装在入户门外侧，门框旁1.3-1.5m高度。螺丝固定底座。G410 为 G4 的升级替代款（2025年7月上市），内置网关可省去额外网关。"
   },
   "camera-g3": {
-    name: "G3 摄像机网关版",
-    model: "CH-H03",
-    price: 699,
+    name: "G5 Pro 智能摄像机（网关版）",
+    model: "CH-C01",
+    price: 1299,
     image: "images/products/camera-g3.png",
-    protocol: "Wi-Fi / Zigbee",
-    buyUrl: "https://www.aqara.cn/Camera-Hub-G3_overview",
-    buyLabel: "Aqara 官网",
+    protocol: "Wi-Fi / Zigbee / Thread",
+    buyUrl: "https://item.jd.com/10136931524381.html",
+    buyLabel: "京东旗舰店",
     features: [
-      "2K 超清画质",
-      "360° 全景旋转扫描",
-      "AI 人体/手势识别",
-      "红外夜视",
-      "内置 Zigbee 网关功能",
-      "本地存储 + RTSP 支持",
+      "400万像素 / 133° 超广角 / F1.0 大光圈",
+      "黑光全彩夜视（0.01Lux 极暗环境仍全彩）",
+      "7种 AI 视觉识别（人脸/宠物/包裹/车辆/人形/镜头遮挡/人员逗留）",
+      "IP65 防尘防水，-30°C~50°C 工作温度",
+      "内置 32GB 存储 + MicroSD + NAS/云端",
+      "内置 Zigbee 3.0 + Thread 双协议网关",
+      "支持 HomeKit 安防视频 / Matter",
       "可接入 Home Assistant + go2rtc"
     ],
     specs: {
-      "分辨率": "2304 × 1296",
-      "视角": "146°",
-      "夜视": "红外 940nm",
-      "存储": "MicroSD 最大256GB"
+      "传感器": "1/1.8\" CMOS",
+      "分辨率": "400万像素 (2560×1440)",
+      "视角": "133°",
+      "光圈": "F1.0",
+      "夜视": "黑光全彩 + IR 940nm",
+      "防护": "IP65",
+      "存储": "内置32GB + MicroSD + NAS",
+      "网关": "Zigbee 3.0 + Thread"
     },
-    install: "放在客厅高处，对准入户门方向。USB-C 供电，需附近有插座。可放电视柜高处或吊顶下方。"
+    install: "可室内外安装（IP65防水）。放在客厅高处或户外门廊。支持 PoE 版（1499元）。G5 Pro 为 G3 的升级替代款（2025年2月上市）。"
   },
   "fp2-sensor": {
     name: "FP2 人体存在传感器",
@@ -554,6 +563,62 @@ const PRODUCTS = {
       "功率": "≤770W"
     },
     install: "安装在阳台晾衣区天花板。需预留220V电源。螺丝固定顶部支架，Aqara 提供全国200+城市免费上门安装服务。"
+  },
+  "rail-socket-50": {
+    name: "小米轨道插座 50cm 套装",
+    model: "XMGDCZ001",
+    price: 299,
+    protocol: "Wi-Fi（智能适配器）",
+    buyUrl: "https://www.mi.com/shop/buy/detail?product_id=21299",
+    buyLabel: "小米商城",
+    features: [
+      "50cm 轨道 + 3个10A适配器（可加购）",
+      "单适配器最大 2500W，轨道总承载 8000W",
+      "旋转外圈通断电设计，拔插更安全",
+      "自回弹关闭式保护门，防手指误插",
+      "960°C 灼热丝阻燃，V-0级PC材质",
+      "可选 10A智能适配器(¥99) 接入米家APP",
+      "可选 33W快充适配器(¥79) USB-C/A",
+      "深空灰/霜雪白两色可选"
+    ],
+    specs: {
+      "轨道长度": "50cm",
+      "轨道承载": "8000W (36A)",
+      "单适配器": "2500W (10A)",
+      "材质": "V-0级阻燃PC + 铜带套管",
+      "安装方式": "螺丝固定 / 3M胶",
+      "轨道槽宽": "4.4mm（防误插）",
+      "颜色": "深空灰 / 霜雪白"
+    },
+    install: "安装在升降桌后方墙面。螺丝固定或强力3M胶粘贴。配3-4个10A适配器供笔记本、显示器、台灯等设备使用。建议加购1个33W快充适配器方便手机充电。可购买小米安装服务(¥49)。"
+  },
+  "rail-socket-100": {
+    name: "小米轨道插座 100cm 套装",
+    model: "XMGDCZ001",
+    price: 499,
+    protocol: "Wi-Fi（智能适配器）",
+    buyUrl: "https://www.mi.com/shop/buy/detail?product_id=21299",
+    buyLabel: "小米商城",
+    features: [
+      "100cm 轨道 + 5个10A适配器（可加购）",
+      "单适配器最大 2500W，轨道总承载 8000W",
+      "旋转外圈通断电设计，拔插更安全",
+      "自回弹关闭式保护门，防手指误插",
+      "960°C 灼热丝阻燃，V-0级PC材质",
+      "可选 10A智能适配器(¥99) 接入米家APP → Home Assistant",
+      "可选 33W快充适配器(¥79) USB-C/A",
+      "深空灰/霜雪白两色可选"
+    ],
+    specs: {
+      "轨道长度": "100cm",
+      "轨道承载": "8000W (36A)",
+      "单适配器": "2500W (10A)",
+      "材质": "V-0级阻燃PC + 铜带套管",
+      "安装方式": "螺丝固定 / 3M胶",
+      "轨道槽宽": "4.4mm（防误插）",
+      "颜色": "深空灰 / 霜雪白"
+    },
+    install: "厨房：安装在备餐区台面上方墙面（冰箱与水槽之间），螺丝固定，远离灶台明火。客厅：安装在电视柜后方墙壁，整合电视、机顶盒、路由器、Mini PC 等设备供电。建议各加购2个10A智能适配器实现远程通断电控制。"
   },
   "cube-t1pro": {
     name: "魔方控制器 T1 Pro",

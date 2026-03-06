@@ -425,7 +425,7 @@ condition:
 action:
   - service: camera.snapshot
     target:
-      entity_id: camera.living_room_g3
+      entity_id: camera.living_room_g5pro
     data:
       filename: "/config/www/snapshots/intrusion_{{ now().strftime('%Y%m%d_%H%M%S') }}.jpg"
   - service: notify.mobile_app

@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JJ-HOME 全屋智能方案 | 设备户型图</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .floorplan-container { position:relative; width:100%; max-width:1100px; margin:0 auto; background:var(--bg-card); border-radius:12px; border:1px solid var(--border); padding:16px; overflow:hidden; }
+    .floorplan-wrapper { position:relative; width:100%; }
+    .floorplan-base { width:100%; height:auto; display:block; }
+    .device-overlay { position:absolute; top:0; left:0; width:100%; height:100%; }
+    .device-marker { cursor:pointer; transition:opacity .15s,filter .15s; filter:drop-shadow(0 1px 2px rgba(0,0,0,.15)); }
+    .device-marker:hover { filter:drop-shadow(0 0 6px rgba(14,165,233,.5)) brightness(1.1); }
+    .device-marker.active { filter:drop-shadow(0 0 8px rgba(14,165,233,.6)) brightness(1.15); }
+    .device-marker .hit-area { fill:transparent; stroke:none; pointer-events:all; }
+    .device-marker .marker-shape { transition:stroke .15s,stroke-width .15s,stroke-opacity .15s; stroke:transparent; stroke-width:0; }
+    .device-marker:hover .marker-shape { stroke:#1E293B; stroke-width:1; stroke-opacity:.4; }
+    .legend-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:8px; margin-top:16px; }
+    .legend-item { display:flex; align-items:center; gap:8px; font-size:.8rem; color:var(--text-secondary); padding:4px 8px; border-radius:6px; background:#F1F5F9; cursor:pointer; transition:background .2s; user-select:none; }
+    .legend-item:hover { background:var(--bg-card-hover); }
+    .legend-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+    .filter-bar { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+    .filter-btn { padding:6px 14px; border-radius:20px; font-size:.8rem; border:1px solid var(--border); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; transition:all .2s; user-select:none; }
+    .filter-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .filter-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); font-weight:600; }
+    .device-panel { position:fixed; top:0; right:-420px; width:400px; height:100vh; background:var(--bg-secondary); border-left:1px solid var(--border); z-index:200; transition:right .3s ease; overflow-y:auto; padding:24px; box-shadow:-4px 0 20px rgba(0,0,0,.08); }
+    .device-panel.open { right:0; }
+    .device-panel-close { position:absolute; top:16px; right:16px; width:32px; height:32px; border-radius:50%; border:1px solid var(--border); background:var(--bg-card); color:var(--text-primary); font-size:18px; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .device-panel-close:hover { background:var(--red); color:#fff; }
+    .panel-title { font-size:1.2rem; font-weight:700; margin-bottom:4px; color:var(--text-primary); }
+    .panel-model { font-size:.85rem; color:var(--accent); margin-bottom:12px; }
+    .panel-room { font-size:.85rem; color:var(--text-muted); margin-bottom:16px; }
+    .panel-section { margin-bottom:16px; }
+    .panel-section h4 { font-size:.85rem; color:var(--text-secondary); margin-bottom:8px; border-bottom:1px solid var(--border); padding-bottom:4px; }
+    .panel-section p,.panel-section li { font-size:.85rem; color:var(--text-primary); line-height:1.6; }
+    .panel-section ul { padding-left:16px; }
+    .panel-link { display:inline-block; margin-top:12px; padding:8px 20px; background:var(--accent); color:#fff; border-radius:8px; font-weight:600; font-size:.85rem; transition:background .2s; }
+    .panel-link:hover { background:var(--accent-hover); color:#fff; }
+    .device-panel-overlay { position:fixed; inset:0; background:rgba(0,0,0,.3); z-index:199; display:none; }
+    .device-panel-overlay.open { display:block; }
+    .stats-row { display:grid; grid-template-columns:repeat(auto-fill,minmax(100px,1fr)); gap:8px; margin-bottom:16px; }
+    .stats-row .stat-card { padding:10px; text-align:center; }
+    .stats-row .stat-value { font-size:1.2rem; }
+    .stats-row .stat-label { font-size:.7rem; }
+    @media(max-width:768px) { .device-panel { width:100%; right:-100%; } .floorplan-container { padding:8px; } }
+  </style>
+</head>
+<body>
+  <div class="overlay" aria-hidden="true"></div>
+  <aside class="sidebar">
+    <div class="sidebar-header"><h1>JJ-HOME</h1><p class="subtitle">全屋智能方案 v1.0</p></div>
+    <nav class="sidebar-nav">
+      <a href="index.html"><span class="nav-icon">🏠</span> 首页总览</a>
+      <a href="products.html"><span class="nav-icon">📦</span> 产品目录</a>
+      <a href="shopping.html"><span class="nav-icon">🛒</span> 购物清单</a>
+      <a href="floorplan.html" class="active"><span class="nav-icon">🗺️</span> 设备户型图</a>
+      <a href="ha-setup.html"><span class="nav-icon">⚙️</span> HA配置</a>
+      <a href="automations.html"><span class="nav-icon">🔄</span> 自动化场景</a>
+      <a href="voice.html"><span class="nav-icon">🎤</span> 语音助手</a>
+      <a href="dashboard.html"><span class="nav-icon">📊</span> 3D仪表盘</a>
+      <a href="wiring.html"><span class="nav-icon">🔌</span> 布线指南</a>
+    </nav>
+  </aside>
+  <main class="main">
+    <header class="header"><button class="hamburger" aria-label="打开菜单">☰</button><h1 class="page-title">设备户型图</h1></header>
+    <div class="content">
+      <section class="stats-row">
+        <div class="stat-card"><div class="stat-value" id="total-count">0</div><div class="stat-label">设备总数</div></div>
+        <div class="stat-card"><div class="stat-value">11</div><div class="stat-label">房间</div></div>
+        <div class="stat-card"><div class="stat-value">42</div><div class="stat-label">灯具</div></div>
+        <div class="stat-card"><div class="stat-value">14</div><div class="stat-label">开关</div></div>
+      </section>
+      <section class="section-header"><span class="section-icon">🗺️</span><h2>交互式设备分布图</h2></section>
+      <p style="color:var(--text-muted);font-size:.85rem;margin-bottom:12px;">点击设备图标查看详情 · 下方筛选器按类型过滤 · 底图由PDF户型图直接转换 · SCALE 1:50
+        <button id="toggleBoundaries" style="margin-left:12px;padding:4px 12px;border-radius:16px;border:1px solid var(--accent);background:var(--accent);color:#fff;font-size:.75rem;cursor:pointer;transition:all .2s;">房间边界: ON</button>
+      </p>
+      <div class="filter-bar" id="filterBar"></div>
+      <div class="floorplan-container">
+        <div class="floorplan-wrapper">
+          <img src="floorplan-base.svg" class="floorplan-base" alt="户型图底图" />
+          <svg class="device-overlay" viewBox="0 0 842 595" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+            <g id="roomBoundaryLayer"></g>
+            <g id="deviceLayer"></g>
+          </svg>
+        </div>
+      </div>
+      <section class="section-header" style="margin-top:24px;"><span class="section-icon">📋</span><h2>图例</h2></section>
+      <div class="legend-grid" id="legendGrid"></div>
+    </div>
+  </main>
+  <div class="device-panel-overlay" id="panelOverlay"></div>
+  <div class="device-panel" id="devicePanel">
+    <button class="device-panel-close" id="panelClose">✕</button>
+    <div id="panelContent"></div>
+  </div>
+
+  <script src="js/products-data.js"></script>
+  <script>
+  const DEVICE_TYPES = {
+    hub:      { label:'中枢/网关', color:'#16A34A', shape:'octagon', size:7 },
+    light:    { label:'筒射灯',   color:'#D97706', shape:'circle',  size:3.5 },
+    strip:    { label:'灯带',     color:'#EA580C', shape:'rect',    size:4 },
+    dimmer:   { label:'调光模块', color:'#CA8A04', shape:'diamond', size:3.5 },
+    switch_w: { label:'有线开关', color:'#2563EB', shape:'square',  size:5 },
+    switch_s: { label:'妙控面板', color:'#4F46E5', shape:'square',  size:6 },
+    switch_n: { label:'无线开关', color:'#3B82F6', shape:'circle',  size:4 },
+    knob:     { label:'旋钮开关', color:'#7C3AED', shape:'circle',  size:5 },
+    curtain:  { label:'窗帘电机', color:'#16A34A', shape:'triangle',size:5 },
+    lock:     { label:'门锁',     color:'#9333EA', shape:'square',  size:6 },
+    doorbell: { label:'门铃',     color:'#E11D48', shape:'diamond', size:5 },
+    camera:   { label:'摄像头',   color:'#DC2626', shape:'circle',  size:5 },
+    fp2:      { label:'FP2传感器',color:'#0891B2', shape:'diamond', size:5 },
+    pir:      { label:'人体传感器',color:'#06B6D4', shape:'circle', size:3.5 },
+    temp:     { label:'温湿度',   color:'#0D9488', shape:'circle',  size:3 },
+    door_s:   { label:'门窗传感器',color:'#0EA5E9', shape:'square', size:3.5 },
+    water:    { label:'水浸传感器',color:'#0284C7', shape:'circle', size:3.5 },
+    gas:      { label:'燃气报警', color:'#DC2626', shape:'triangle',size:4 },
+    smoke:    { label:'烟雾报警', color:'#E11D48', shape:'triangle',size:4 },
+    plug:     { label:'智能插座', color:'#6B7280', shape:'square',  size:3.5 },
+    rail_plug:{ label:'滑轨排插', color:'#8B5CF6', shape:'rect',    size:6 },
+    nfc:      { label:'NFC贴纸',  color:'#9CA3AF', shape:'circle',  size:2.5 },
+    dryer:    { label:'晾衣机',   color:'#16A34A', shape:'rect',    size:5 },
+    cube:     { label:'魔方控制器',color:'#7C3AED', shape:'diamond', size:4 },
+    voice:    { label:'语音终端', color:'#CA8A04', shape:'circle',  size:3 },
+    robot:    { label:'扫地机',   color:'#6B7280', shape:'circle',  size:5 },
+    minipc:   { label:'Mini PC',  color:'#059669', shape:'square',  size:5 },
+    airmon:   { label:'空气检测仪',color:'#0D9488', shape:'diamond',size:3.5 },
+  };
+
+  /*
+   * Room boundaries:
+   * 主卫 = 斜线填充区域(浴室瓷砖), 在主卧右侧.
+   * 餐厅 = 中央开放区域(CHINESE RESTAURANT), 客厅与厨房之间.
+   * 衣帽间 = 玄关左侧独立房间(储物).
+   * 玄关 = 入户门(y≈404 gap)正对的门厅.
+   * 客卫 = 洗漱间+淋浴间两个小间.
+   * 休闲阳台 = 客厅+多功能房左侧全长.
+   */
+
+  const ROOM_POLYGONS = {
+    '主卧':     { color:'#E74C3C', points:[[241,82],[417,82],[417,213],[241,213]] },
+    '主卫':     { color:'#1ABC9C', points:[[417,82],[503,82],[503,195],[417,195]] },
+    '男孩房':   { color:'#3498DB', points:[[503,104],[628,104],[628,213],[503,213]] },
+    '客厅':     { color:'#2ECC71', points:[[241,223],[395,223],[395,371],[241,371]] },
+    '餐厅':     { color:'#F39C12', points:[[395,213],[543,213],[543,340],[395,340]] },
+    '厨房':     { color:'#E67E22', points:[[543,223],[654,223],[654,334],[543,334]] },
+    '衣帽间':   { color:'#8E44AD', points:[[420,340],[480,340],[480,404],[420,404]] },
+    '玄关':     { color:'#9B59B6', points:[[480,340],[543,340],[543,404],[480,404]] },
+    '客卫':     { color:'#00CED1', points:[[543,334],[654,334],[654,404],[543,404]] },
+    '多功能房': { color:'#27AE60', points:[[241,371],[394,371],[394,494],[241,494]] },
+    '休闲阳台': { color:'#F1C40F', points:[[183,223],[241,223],[241,494],[183,494]] },
+  };
+
+  const DEVICES = [
+    // === 玄关 FOYER  x[480,543] y[340,404]  入户门在底部 y≈404 gap ===
+    { id:'e-lock',  type:'lock',     room:'玄关', name:'D200 人脸门锁',     model:'D200',        x:510,y:400, pos:'入户门',            productId:'lock-d200' },
+    { id:'e-bell',  type:'doorbell', room:'玄关', name:'G410 智能门铃',     model:'G410 网关版', x:515,y:403, pos:'入户门外侧',        productId:'doorbell-g4' },
+    { id:'e-fp2',   type:'fp2',      room:'玄关', name:'FP2 存在传感器',    model:'FP2',         x:510,y:362, pos:'天花板',            productId:'fp2-sensor' },
+    { id:'e-t3',    type:'light',    room:'玄关', name:'T3 筒射灯 ×3',     model:'T3 6W',       x:510,y:375, pos:'吊顶',              productId:'spotlight-t3', count:3 },
+    { id:'e-sw',    type:'switch_w', room:'玄关', name:'H1 Pro 单键',      model:'H1 Pro',      x:520,y:395, pos:'入户门内侧',        productId:'h1pro-double' },
+    { id:'e-door',  type:'door_s',   room:'玄关', name:'门窗传感器 E1',     model:'E1',          x:505,y:402, pos:'入户门框',          productId:'door-sensor-e1' },
+    { id:'e-nfc',   type:'nfc',      room:'玄关', name:'NFC 离家贴纸',     model:'NTAG215',     x:495,y:392, pos:'门内侧墙壁',        productId:null },
+
+    // === 衣帽间 Closet/Dressing Room  x[420,480] y[340,404] ===
+
+    // === 餐厅 Dining Room  x[395,543] y[213,340]  中央开放式餐厅 ===
+    { id:'d-t3',    type:'light',    room:'餐厅', name:'T3 筒射灯 ×4',     model:'T3 6W',       x:468,y:275, pos:'吊顶',              productId:'spotlight-t3', count:4 },
+    { id:'d-pir',   type:'pir',      room:'餐厅', name:'P2 人体传感器',     model:'P2',          x:468,y:310, pos:'天花板中段',        productId:'p2-sensor' },
+    { id:'d-sw',    type:'switch_w', room:'餐厅', name:'H1 Pro 单键',      model:'H1 Pro',      x:405,y:230, pos:'餐厅入口',          productId:'h1pro-double' },
+    { id:'d-voice', type:'voice',    room:'餐厅', name:'语音终端 ESP32',    model:'ESP32-S3',    x:458,y:330, pos:'餐厅墙面',          productId:null },
+
+    // === 客厅 Living Room  x[241,395] y[223,371] ===
+    // 与餐厅完全开放相连, x≈395处无墙!
+    // 唯二可装开关的墙面: ① 西墙/电视墙(y≈228) ② 衣帽间外墙(y≈338)
+    // 西墙(y≈228): 电视柜 x≈280-395 (主卧与客厅之间)
+    // 东侧(y≈350-370): L型沙发, 靠近多功能房升降桌
+    // 南墙(x≈244): 阳台推拉门/窗户(无实墙)
+    // 茶几: 圆形, 沙发与电视之间 x≈310 y≈300
+    { id:'l-m3',    type:'hub',      room:'客厅', name:'M3 方舟智慧中枢',   model:'HE-P60',      x:330,y:232, pos:'电视柜旁',          productId:'m3-hub' },
+    { id:'l-t2a',   type:'light',    room:'客厅', name:'T2 筒射灯 ×4',     model:'T2 10W',      x:310,y:355, pos:'沙发区吊顶',        productId:'spotlight-t2', count:4 },
+    { id:'l-t2b',   type:'light',    room:'客厅', name:'T2 筒射灯 ×4',     model:'T2 10W',      x:310,y:240, pos:'电视区吊顶',        productId:'spotlight-t2', count:4 },
+    { id:'l-t2c',   type:'light',    room:'客厅', name:'T2 筒射灯 ×4',     model:'T2 10W',      x:380,y:300, pos:'客厅北侧吊顶',      productId:'spotlight-t2', count:4 },
+    { id:'l-str1',  type:'strip',    room:'客厅', name:'灯带 T1 ×2',       model:'流光溢彩 T1', x:318,y:232, pos:'电视墙吊顶灯槽',    productId:'led-strip', count:2 },
+    { id:'l-dim1',  type:'dimmer',   room:'客厅', name:'调光模块 ×2',       model:'T1',          x:340,y:232, pos:'灯槽内暗藏',        productId:'dimmer-t1', count:2 },
+    { id:'l-wled',  type:'strip',    room:'客厅', name:'WLED WS2812B',     model:'WS2812B 5m',  x:320,y:228, pos:'电视柜背面',        productId:null },
+    { id:'l-s1e',   type:'switch_s', room:'客厅', name:'妙控开关 S1E',      model:'S1E',         x:382,y:230, pos:'电视墙北端',        productId:'s1e-panel' },
+    { id:'l-sw1',   type:'switch_w', room:'客厅', name:'H1 Pro 三键 ×2',   model:'H1 Pro',      x:440,y:338, pos:'衣帽间外墙',        productId:'h1pro-double', count:2 },
+    { id:'l-knob',  type:'knob',     room:'客厅', name:'旋钮 H1 无线',     model:'H1 无线版',   x:310,y:300, pos:'茶几上',            productId:'knob-h1' },
+    { id:'l-c3a',   type:'curtain',  room:'客厅', name:'C3 窗帘(南左)',     model:'C3',          x:244,y:255, pos:'南窗左侧',          productId:'curtain-c3' },
+    { id:'l-c3b',   type:'curtain',  room:'客厅', name:'C3 窗帘(南右)',     model:'C3',          x:244,y:355, pos:'南窗右侧',          productId:'curtain-c3' },
+    { id:'l-fp2',   type:'fp2',      room:'客厅', name:'FP2 存在传感器',    model:'FP2',         x:318,y:297, pos:'天花板中央',        productId:'fp2-sensor' },
+    { id:'l-temp',  type:'temp',     room:'客厅', name:'温湿度传感器 T1',   model:'T1',          x:350,y:232, pos:'电视柜上',          productId:'temp-e1' },
+    { id:'l-cam',   type:'camera',   room:'客厅', name:'G5 Pro 摄像机',    model:'G5 Pro',      x:390,y:228, pos:'西北角高处朝入户门', productId:'camera-g3' },
+    { id:'l-plg1',  type:'plug',     room:'客厅', name:'插座 T1 (电视)',    model:'T1 计量版',   x:310,y:228, pos:'电视墙插座',        productId:'smart-plug-t1' },
+    { id:'l-plg2',  type:'plug',     room:'客厅', name:'插座 T1 (路由器)',  model:'T1 计量版',   x:345,y:228, pos:'电视柜旁插座',      productId:'smart-plug-t1' },
+    { id:'l-nfc1',  type:'nfc',      room:'客厅', name:'NFC 观影模式',     model:'NTAG215',     x:310,y:358, pos:'沙发扶手',          productId:null },
+    { id:'l-nfc2',  type:'nfc',      room:'客厅', name:'NFC 聚会模式',     model:'NTAG215',     x:315,y:305, pos:'茶几',              productId:null },
+    { id:'l-voice', type:'voice',    room:'客厅', name:'语音终端 ESP32',    model:'ESP32-S3',    x:455,y:338, pos:'衣帽间外墙',        productId:null },
+    { id:'l-rail',  type:'rail_plug',room:'客厅', name:'小米轨道插座 100cm',model:'XMGDCZ001',   x:320,y:228, pos:'电视柜后方墙壁',    productId:'rail-socket-100' },
+    { id:'l-mini',  type:'minipc',   room:'客厅', name:'Mini PC (HA)',     model:'N100',        x:300,y:232, pos:'电视柜内/弱电箱',   productId:null },
+    { id:'l-air',   type:'airmon',   room:'客厅', name:'青萍空气检测仪',    model:'Lite',        x:335,y:232, pos:'电视柜上',          productId:null },
+    { id:'l-robot', type:'robot',    room:'客厅', name:'追觅X40 Pro',      model:'X40 Pro',     x:388,y:365, pos:'北墙角充电桩',      productId:null },
+
+    // === 主卧 Master Bedroom  x[241,417] y[82,213]  床头在西(上, y≈82) ===
+    { id:'m-t3',    type:'light',    room:'主卧', name:'T3 筒射灯 ×7',     model:'T3 6W',       x:329,y:148, pos:'吊顶分散',          productId:'spotlight-t3', count:7 },
+    { id:'m-strip', type:'strip',    room:'主卧', name:'灯带 T1',          model:'流光溢彩 T1', x:329,y:90,  pos:'床头灯槽',          productId:'led-strip' },
+    { id:'m-dim',   type:'dimmer',   room:'主卧', name:'调光模块 T1',       model:'T1',          x:310,y:90,  pos:'床头暗藏',          productId:'dimmer-t1' },
+    { id:'m-s1e',   type:'switch_s', room:'主卧', name:'妙控开关 S1E',      model:'S1E',         x:410,y:130, pos:'门口墙壁',          productId:'s1e-panel' },
+    { id:'m-sw1',   type:'switch_w', room:'主卧', name:'H1 Pro 双键 ×2',   model:'H1 Pro',      x:410,y:165, pos:'门口+床头双控',     productId:'h1pro-double', count:2 },
+    { id:'m-swn',   type:'switch_n', room:'主卧', name:'无线开关 H1',       model:'H1 双键',     x:290,y:96,  pos:'床头柜',            productId:'wireless-h1' },
+    { id:'m-c3',    type:'curtain',  room:'主卧', name:'C3 窗帘(南窗)',     model:'C3',          x:244,y:150, pos:'南窗 1.75m',        productId:'curtain-c3' },
+    { id:'m-fp2',   type:'fp2',      room:'主卧', name:'FP2 存在传感器',    model:'FP2',         x:360,y:148, pos:'天花板',            productId:'fp2-sensor' },
+    { id:'m-temp',  type:'temp',     room:'主卧', name:'温湿度传感器 T1',   model:'T1',          x:370,y:96,  pos:'床头柜旁',          productId:'temp-e1' },
+    { id:'m-nfc',   type:'nfc',      room:'主卧', name:'NFC 睡眠模式',     model:'NTAG215',     x:290,y:100, pos:'床头柜',            productId:null },
+    { id:'m-voice', type:'voice',    room:'主卧', name:'语音终端 ESP32',    model:'ESP32-S3',    x:408,y:205, pos:'主卧墙面',          productId:null },
+
+    // === 主卫 Master Bathroom  x[417,503] y[82,195]  斜线填充=浴室瓷砖, 从主卧门进入 ===
+    { id:'mb-pir',  type:'pir',      room:'主卫', name:'P2 人体传感器',     model:'P2',          x:460,y:125, pos:'天花板',            productId:'p2-sensor' },
+    { id:'mb-sw',   type:'switch_w', room:'主卫', name:'H1 Pro 单键',      model:'H1 Pro',      x:425,y:182, pos:'门口墙壁',          productId:'h1pro-double' },
+    { id:'mb-wtr',  type:'water',    room:'主卫', name:'水浸传感器 T1',     model:'T1',          x:470,y:160, pos:'洗手台下方',        productId:'water-leak-t1' },
+
+    // === 男孩房 Boy's Room  x[503,628] y[104,213]  床头在西(上, y≈104) ===
+    { id:'b-t3',    type:'light',    room:'男孩房', name:'T3 筒射灯 ×6',   model:'T3 6W',       x:566,y:158, pos:'吊顶分散',          productId:'spotlight-t3', count:6 },
+    { id:'b-strip', type:'strip',    room:'男孩房', name:'灯带 T1',         model:'流光溢彩 T1', x:580,y:112, pos:'床头灯槽',          productId:'led-strip' },
+    { id:'b-dim',   type:'dimmer',   room:'男孩房', name:'调光模块 T1',     model:'T1',          x:568,y:112, pos:'暗藏',              productId:'dimmer-t1' },
+    { id:'b-sw',    type:'switch_w', room:'男孩房', name:'H1 Pro 双键',     model:'H1 Pro',      x:510,y:200, pos:'门口墙壁',          productId:'h1pro-double' },
+    { id:'b-swn',   type:'switch_n', room:'男孩房', name:'无线开关 H1',     model:'H1 双键',     x:560,y:118, pos:'床头柜',            productId:'wireless-h1' },
+    { id:'b-c3',    type:'curtain',  room:'男孩房', name:'C3 窗帘(北窗)',   model:'C3',          x:624,y:155, pos:'北窗帘',            productId:'curtain-c3' },
+    { id:'b-pir',   type:'pir',      room:'男孩房', name:'P2 人体传感器',   model:'P2',          x:600,y:200, pos:'天花板角落',        productId:'p2-sensor' },
+    { id:'b-temp',  type:'temp',     room:'男孩房', name:'温湿度传感器 T1', model:'T1',          x:595,y:118, pos:'床头柜旁',          productId:'temp-e1' },
+    { id:'b-voice', type:'voice',    room:'男孩房', name:'语音终端 ESP32',   model:'ESP32-S3',    x:510,y:206, pos:'墙面',              productId:null },
+
+    // === 多功能房 Multi-function Room  x[241,394] y[371,493] ===
+    // 东墙(y≈488)无窗! 实墙结构: 左收纳柜(800) + 中壁床Murphy bed(1600) + 右收纳柜(1400)
+    // 壁床平时收起来藏在墙内
+    { id:'f-t2',    type:'light',    room:'多功能房', name:'T2 筒射灯 ×8', model:'T2 10W',      x:318,y:400, pos:'吊顶分散',          productId:'spotlight-t2', count:8 },
+    { id:'f-strip', type:'strip',    room:'多功能房', name:'灯带 T1',       model:'流光溢彩 T1', x:300,y:420, pos:'升降桌上灯槽',      productId:'led-strip' },
+    { id:'f-dim',   type:'dimmer',   room:'多功能房', name:'调光模块 T1',   model:'T1',          x:288,y:420, pos:'暗藏',              productId:'dimmer-t1' },
+    { id:'f-wled',  type:'strip',    room:'多功能房', name:'WLED WS2812B', model:'WS2812B 5m',  x:258,y:435, pos:'收纳柜背面',        productId:null },
+    { id:'f-sw',    type:'switch_w', room:'多功能房', name:'H1 Pro 双键',   model:'H1 Pro',      x:388,y:432, pos:'门口墙壁',          productId:'h1pro-double' },
+    { id:'f-rail',  type:'rail_plug',room:'多功能房', name:'小米轨道插座 50cm',model:'XMGDCZ001',  x:310,y:435, pos:'升降桌后方墙面',    productId:'rail-socket-50' },
+    { id:'f-swn',   type:'switch_n', room:'多功能房', name:'无线开关 H1',   model:'H1 双键',     x:340,y:445, pos:'升降桌旁',          productId:'wireless-h1' },
+    { id:'f-fp2',   type:'fp2',      room:'多功能房', name:'FP2 存在传感器',model:'FP2',         x:330,y:432, pos:'天花板中央',        productId:'fp2-sensor' },
+    { id:'f-temp',  type:'temp',     room:'多功能房', name:'温湿度传感器 T1',model:'T1',         x:255,y:460, pos:'南墙面',            productId:'temp-e1' },
+    { id:'f-nfc',   type:'nfc',      room:'多功能房', name:'NFC 工作模式', model:'NTAG215',     x:310,y:445, pos:'升降桌边',          productId:null },
+    { id:'f-voice', type:'voice',    room:'多功能房', name:'语音终端 ESP32',model:'ESP32-S3',    x:386,y:475, pos:'门口墙面',          productId:null },
+
+    // === 厨房 Kitchen  x[543,654] y[223,334] ===
+    // 北墙台面从西→东: 冰箱/高柜(y≈235) → 水槽(y≈270) → 灶台+油烟机(y≈305) → 洗碗机(y≈325)
+    { id:'k-sw',    type:'switch_w', room:'厨房', name:'H1 Pro 双键',      model:'H1 Pro',      x:555,y:320, pos:'厨房门口',          productId:'h1pro-double' },
+    { id:'k-gas',   type:'gas',      room:'厨房', name:'天然气报警器',      model:'Aqara',       x:648,y:302, pos:'燃气灶上方墙壁',    productId:'gas-alarm' },
+    { id:'k-smoke', type:'smoke',    room:'厨房', name:'烟雾报警器',       model:'NB-IoT',      x:598,y:280, pos:'天花板中央',        productId:'smoke-alarm' },
+    { id:'k-water', type:'water',    room:'厨房', name:'水浸传感器 T1',     model:'T1',          x:648,y:270, pos:'水槽下方橱柜内',    productId:'water-leak-t1' },
+    { id:'k-plg1',  type:'plug',     room:'厨房', name:'插座 T1 (油烟机)',  model:'T1 计量版',   x:648,y:308, pos:'油烟机上方墙壁',    productId:'smart-plug-t1' },
+    { id:'k-plg2',  type:'plug',     room:'厨房', name:'插座 T1 (洗碗机)',  model:'T1 计量版',   x:648,y:325, pos:'洗碗机插座位',      productId:'smart-plug-t1' },
+    { id:'k-rail',  type:'rail_plug',room:'厨房', name:'小米轨道插座 100cm',model:'XMGDCZ001',   x:648,y:250, pos:'备餐区台面上方墙壁(冰箱与水槽之间)', productId:'rail-socket-100' },
+    { id:'k-voice', type:'voice',    room:'厨房', name:'语音终端 ESP32',    model:'ESP32-S3',    x:570,y:285, pos:'厨房墙面',          productId:null },
+
+    // === 客卫 Guest Bathroom  x[543,654] y[334,404]  洗漱间x[543,619]+淋浴间x[619,654] ===
+    { id:'g-pir',   type:'pir',      room:'客卫', name:'P2 人体传感器',     model:'P2',          x:580,y:358, pos:'洗漱间天花板',      productId:'p2-sensor' },
+    { id:'g-sw',    type:'switch_w', room:'客卫', name:'H1 Pro 单键',      model:'H1 Pro',      x:550,y:392, pos:'门口墙壁',          productId:'h1pro-double' },
+    { id:'g-water', type:'water',    room:'客卫', name:'水浸传感器 T1',     model:'T1',          x:636,y:378, pos:'淋浴间地面',        productId:'water-leak-t1' },
+
+    // === 休闲阳台 Leisure Balcony  x[183,241] y[371,493] ===
+    { id:'a-dryer', type:'dryer',    room:'休闲阳台', name:'智能晾衣机 H1', model:'H1',          x:212,y:420, pos:'阳台天花板',        productId:'drying-rack' },
+    { id:'a-c3',    type:'curtain',  room:'休闲阳台', name:'C3 窗帘(南窗)', model:'C3',          x:188,y:435, pos:'阳台南窗',          productId:'curtain-c3' },
+  ];
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const layer = document.getElementById('deviceLayer');
+  const boundaryLayer = document.getElementById('roomBoundaryLayer');
+  const filterBar = document.getElementById('filterBar');
+  const legendGrid = document.getElementById('legendGrid');
+  const panel = document.getElementById('devicePanel');
+  const panelOverlay = document.getElementById('panelOverlay');
+  const panelContent = document.getElementById('panelContent');
+  const panelClose = document.getElementById('panelClose');
+  let activeFilter = 'all', activeDevice = null;
+  let showBoundaries = true;
+
+  function renderBoundaries() {
+    boundaryLayer.innerHTML = '';
+    if (!showBoundaries) return;
+    Object.entries(ROOM_POLYGONS).forEach(([name, room]) => {
+      const pts = room.points.map(p => p.join(',')).join(' ');
+      const poly = document.createElementNS(svgNS, 'polygon');
+      poly.setAttribute('points', pts);
+      poly.setAttribute('fill', room.color);
+      poly.setAttribute('fill-opacity', '0.08');
+      poly.setAttribute('stroke', room.color);
+      poly.setAttribute('stroke-width', '2');
+      poly.setAttribute('stroke-opacity', '0.7');
+      poly.setAttribute('stroke-dasharray', '6,3');
+      boundaryLayer.appendChild(poly);
+      const cx = room.points.reduce((s, p) => s + p[0], 0) / room.points.length;
+      const cy = room.points.reduce((s, p) => s + p[1], 0) / room.points.length;
+      const label = document.createElementNS(svgNS, 'text');
+      label.setAttribute('x', cx);
+      label.setAttribute('y', cy);
+      label.setAttribute('text-anchor', 'middle');
+      label.setAttribute('dominant-baseline', 'central');
+      label.setAttribute('fill', room.color);
+      label.setAttribute('font-size', '9');
+      label.setAttribute('font-weight', '700');
+      label.setAttribute('opacity', '0.65');
+      label.textContent = name;
+      boundaryLayer.appendChild(label);
+    });
+  }
+
+  document.getElementById('toggleBoundaries').addEventListener('click', function() {
+    showBoundaries = !showBoundaries;
+    this.textContent = '房间边界: ' + (showBoundaries ? 'ON' : 'OFF');
+    this.style.background = showBoundaries ? 'var(--accent)' : 'var(--bg-card)';
+    this.style.color = showBoundaries ? '#fff' : 'var(--text-secondary)';
+    renderBoundaries();
+  });
+
+  function createShape(type, x, y) {
+    const cfg = DEVICE_TYPES[type];
+    if (!cfg) return null;
+    const s = cfg.size;
+    let el;
+    switch (cfg.shape) {
+      case 'circle':
+        el = document.createElementNS(svgNS, 'circle');
+        el.setAttribute('cx', x); el.setAttribute('cy', y); el.setAttribute('r', s);
+        break;
+      case 'square':
+        el = document.createElementNS(svgNS, 'rect');
+        el.setAttribute('x', x - s); el.setAttribute('y', y - s);
+        el.setAttribute('width', s * 2); el.setAttribute('height', s * 2); el.setAttribute('rx', 1.5);
+        break;
+      case 'diamond':
+        el = document.createElementNS(svgNS, 'polygon');
+        el.setAttribute('points', `${x},${y-s} ${x+s},${y} ${x},${y+s} ${x-s},${y}`);
+        break;
+      case 'triangle':
+        el = document.createElementNS(svgNS, 'polygon');
+        el.setAttribute('points', `${x},${y-s} ${x+s},${y+s*.7} ${x-s},${y+s*.7}`);
+        break;
+      case 'octagon': {
+        const r = s, a = r * .414;
+        el = document.createElementNS(svgNS, 'polygon');
+        el.setAttribute('points', [
+          `${x-a},${y-r}`, `${x+a},${y-r}`, `${x+r},${y-a}`, `${x+r},${y+a}`,
+          `${x+a},${y+r}`, `${x-a},${y+r}`, `${x-r},${y+a}`, `${x-r},${y-a}`
+        ].join(' '));
+        break;
+      }
+      case 'rect':
+        el = document.createElementNS(svgNS, 'rect');
+        el.setAttribute('x', x - s * 1.5); el.setAttribute('y', y - s * .5);
+        el.setAttribute('width', s * 3); el.setAttribute('height', s); el.setAttribute('rx', 1.5);
+        break;
+    }
+    el.setAttribute('fill', cfg.color);
+    return el;
+  }
+
+  function renderDevices() {
+    layer.innerHTML = '';
+    DEVICES.forEach(d => {
+      const cfg = DEVICE_TYPES[d.type];
+      if (!cfg) return;
+      const pos = { x: d.x, y: d.y };
+      const g = document.createElementNS(svgNS, 'g');
+      g.classList.add('device-marker');
+      g.dataset.id = d.id;
+      g.dataset.type = d.type;
+      if (activeFilter !== 'all' && d.type !== activeFilter) {
+        g.style.opacity = '0.12';
+        g.style.pointerEvents = 'none';
+      }
+      const hit = document.createElementNS(svgNS, 'circle');
+      hit.setAttribute('cx', pos.x); hit.setAttribute('cy', pos.y);
+      hit.setAttribute('r', 10);
+      hit.classList.add('hit-area');
+      g.appendChild(hit);
+      const shape = createShape(d.type, pos.x, pos.y);
+      if (shape) { shape.classList.add('marker-shape'); g.appendChild(shape); }
+      if (d.count && d.count > 1) {
+        const t = document.createElementNS(svgNS, 'text');
+        t.setAttribute('x', pos.x + cfg.size + 2); t.setAttribute('y', pos.y + 2.5);
+        t.setAttribute('fill', cfg.color); t.setAttribute('font-size', '6'); t.setAttribute('font-weight', '700');
+        t.textContent = '\u00d7' + d.count;
+        g.appendChild(t);
+      }
+      const title = document.createElementNS(svgNS, 'title');
+      title.textContent = `${d.name}\n${d.room} \u00b7 ${d.pos}`;
+      g.appendChild(title);
+      g.addEventListener('click', () => openPanel(d));
+      layer.appendChild(g);
+    });
+    document.getElementById('total-count').textContent = DEVICES.reduce((s, d) => s + (d.count || 1), 0);
+  }
+
+  function openPanel(d) {
+    const cfg = DEVICE_TYPES[d.type];
+    const prod = d.productId && typeof PRODUCTS !== 'undefined' ? PRODUCTS[d.productId] : null;
+    let html = '';
+    if (prod && prod.image) {
+      html += `<div style="text-align:center;margin-bottom:16px;background:#F8FAFC;border-radius:10px;padding:12px;border:1px solid var(--border);">
+        <img src="${prod.image}" alt="${d.name}" style="max-width:100%;max-height:180px;object-fit:contain;border-radius:6px;"
+             onerror="this.parentElement.style.display='none'" />
+      </div>`;
+    }
+    html += `<div class="panel-title">${d.name}</div>
+      <div class="panel-model">${d.model}</div>`;
+    if (prod && prod.price) {
+      html += `<div style="font-size:1.3rem;font-weight:700;color:#E74C3C;margin:6px 0 10px;">\u00a5${prod.price}${d.count > 1 ? `<span style="font-size:.8rem;font-weight:400;color:var(--text-muted);margin-left:8px;">\u00d7${d.count} = \u00a5${prod.price * d.count}</span>` : ''}</div>`;
+    }
+    html += `<div class="panel-room">\ud83d\udccd ${d.room} \u00b7 ${d.pos}</div>
+      <div style="display:inline-block;padding:3px 10px;border-radius:12px;font-size:.75rem;background:${cfg.color}18;color:${cfg.color};border:1px solid ${cfg.color}44;margin-bottom:16px;">${cfg.label}</div>`;
+    if (prod) {
+      html += `<div class="panel-section"><h4>产品功能</h4><ul>`;
+      (prod.features || []).forEach(f => html += `<li>${f}</li>`);
+      html += `</ul></div>`;
+      if (prod.specs) {
+        html += `<div class="panel-section"><h4>规格参数</h4><table style="width:100%;font-size:.8rem;">`;
+        Object.entries(prod.specs).forEach(([k, v]) => {
+          html += `<tr><td style="color:var(--text-muted);padding:3px 8px 3px 0;white-space:nowrap;">${k}</td><td style="color:var(--text-primary);padding:3px 0;">${v}</td></tr>`;
+        });
+        html += `</table></div>`;
+      }
+      if (prod.install) html += `<div class="panel-section"><h4>安装说明</h4><p>${prod.install}</p></div>`;
+      if (prod.buyUrl) html += `<a class="panel-link" href="${prod.buyUrl}" target="_blank">${prod.buyLabel || '查看购买链接'} \u2192</a>`;
+      html += `<a class="panel-link" href="products.html#${d.productId}" style="margin-left:8px;background:var(--bg-card);color:var(--accent);border:1px solid var(--accent);">产品目录 \u2192</a>`;
+    } else {
+      html += `<div class="panel-section"><h4>安装位置</h4><p>${d.pos}</p></div>`;
+    }
+    panelContent.innerHTML = html;
+    panel.classList.add('open');
+    panelOverlay.classList.add('open');
+    if (activeDevice) {
+      const prev = layer.querySelector(`[data-id="${activeDevice}"]`);
+      if (prev) prev.classList.remove('active');
+    }
+    activeDevice = d.id;
+    const mk = layer.querySelector(`[data-id="${d.id}"]`);
+    if (mk) mk.classList.add('active');
+  }
+
+  function closePanel() {
+    panel.classList.remove('open');
+    panelOverlay.classList.remove('open');
+    if (activeDevice) {
+      const prev = layer.querySelector(`[data-id="${activeDevice}"]`);
+      if (prev) prev.classList.remove('active');
+      activeDevice = null;
+    }
+  }
+  panelClose.addEventListener('click', closePanel);
+  panelOverlay.addEventListener('click', closePanel);
+
+  const usedTypes = [...new Set(DEVICES.map(d => d.type))];
+  let fhtml = `<button class="filter-btn active" data-type="all">全部</button>`;
+  usedTypes.forEach(t => {
+    const c = DEVICE_TYPES[t];
+    if (c) fhtml += `<button class="filter-btn" data-type="${t}"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:${c.color};margin-right:4px;vertical-align:middle;"></span>${c.label}</button>`;
+  });
+  filterBar.innerHTML = fhtml;
+  filterBar.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = btn.dataset.type;
+    renderDevices();
+  });
+
+  let lhtml = '';
+  usedTypes.forEach(t => {
+    const c = DEVICE_TYPES[t];
+    if (c) {
+      const cnt = DEVICES.filter(d => d.type === t).reduce((s, d) => s + (d.count || 1), 0);
+      lhtml += `<div class="legend-item" data-type="${t}"><span class="legend-dot" style="background:${c.color}"></span>${c.label} (${cnt})</div>`;
+    }
+  });
+  legendGrid.innerHTML = lhtml;
+  legendGrid.addEventListener('click', e => {
+    const item = e.target.closest('.legend-item');
+    if (!item) return;
+    const btn = filterBar.querySelector(`[data-type="${item.dataset.type}"]`);
+    if (btn) btn.click();
+  });
+
+  renderBoundaries();
+  renderDevices();
+
+  const hamburger = document.querySelector('.hamburger');
+  const sidebar = document.querySelector('.sidebar');
+  const overlay = document.querySelector('.overlay');
+  if (hamburger) {
+    hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('active'); });
+    overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('active'); });
+  }
+  </script>
+</body>
+</html>

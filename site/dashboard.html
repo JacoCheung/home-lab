@@ -20,6 +20,7 @@
       <a href="index.html"><span class="nav-icon">🏠</span> 首页总览</a>
       <a href="products.html"><span class="nav-icon">📦</span> 产品目录</a>
       <a href="shopping.html"><span class="nav-icon">🛒</span> 购物清单</a>
+      <a href="floorplan.html"><span class="nav-icon">🗺️</span> 设备户型图</a>
       <a href="ha-setup.html"><span class="nav-icon">⚙️</span> HA配置</a>
       <a href="automations.html"><span class="nav-icon">🔄</span> 自动化场景</a>
       <a href="voice.html"><span class="nav-icon">🎤</span> 语音助手</a>
@@ -302,7 +303,7 @@ elements:
 
   # === 摄像头弹窗 (webrtc) ===
   - type: state-icon
-    entity: camera.living_room_g3
+    entity: camera.living_room_g5pro
     icon: mdi:cctv
     tap_action:
       action: fire-dom-event
@@ -312,7 +313,7 @@ elements:
           title: "客厅摄像头"
           content:
             type: custom:webrtc-camera
-            entity: camera.living_room_g3
+            entity: camera.living_room_g5pro
             url: "living_room_cam"
     style:
       top: 20%
@@ -473,7 +474,7 @@ webrtc:
         <div class="code-wrapper">
           <span class="code-label">yaml</span>
           <pre><code>type: custom:webrtc-camera
-entity: camera.living_room_g3
+entity: camera.living_room_g5pro
 url: "living_room_cam"  # 对应 go2rtc 中的 stream 名</code></pre>
         </div>
         <p style="color: var(--text-secondary); font-size: .9rem; margin-top: 12px;">延迟通常在 0.5-1 秒之间（WebRTC 方式）。</p>
