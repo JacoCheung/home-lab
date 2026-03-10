@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JJ-HOME 全屋智能方案 | 小米 Miloco</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="overlay" aria-hidden="true"></div>
+
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <h1>JJ-HOME</h1>
+      <p class="subtitle">全屋智能方案 v1.0</p>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="index.html"><span class="nav-icon">🏠</span> 首页总览</a>
+      <a href="products.html"><span class="nav-icon">📦</span> 产品目录</a>
+      <a href="shopping.html"><span class="nav-icon">🛒</span> 购物清单</a>
+      <a href="floorplan.html"><span class="nav-icon">🗺️</span> 设备户型图</a>
+      <a href="ha-setup.html"><span class="nav-icon">⚙️</span> HA配置</a>
+      <a href="automations.html"><span class="nav-icon">🔄</span> 自动化场景</a>
+      <a href="voice.html"><span class="nav-icon">🎤</span> 语音助手</a>
+      <a href="dashboard.html"><span class="nav-icon">📊</span> 3D仪表盘</a>
+      <a href="miloco.html" class="active"><span class="nav-icon">👁️</span> 小米 Miloco</a>
+      <a href="wiring.html"><span class="nav-icon">🔌</span> 布线指南</a>
+    </nav>
+  </aside>
+
+  <main class="main">
+    <header class="header">
+      <button class="hamburger" aria-label="打开菜单">☰</button>
+      <h1 class="page-title">小米 Miloco</h1>
+    </header>
+
+    <div class="content">
+      <section class="hero">
+        <h2>Xiaomi Miloco · 视觉 + 自然语言规则</h2>
+        <p>以米家摄像机为视觉源、端侧大模型做视频理解，用自然语言设家庭规则，与 HA 方案并存</p>
+        <p style="margin-top:12px;"><a href="https://github.com/XiaoMi/xiaomi-miloco" target="_blank" rel="noopener" class="link">GitHub: XiaoMi/xiaomi-miloco</a></p>
+      </section>
+
+      <section class="section-header">
+        <span class="section-icon">📍</span>
+        <h2>在本方案中的定位</h2>
+      </section>
+      <div class="card">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>现有方案</th><th>Miloco 补充</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Home Assistant：自动化、设备控制、3D 仪表盘</td><td>自然语言设规则、对话式控制</td></tr>
+              <tr><td>Ollama + 小智：语音、AI 对话</td><td>端侧视觉理解（看家场景、视频问答）</td></tr>
+              <tr><td>Frigate：AI 视频分析</td><td>大模型级视频理解</td></tr>
+              <tr><td>Aqara / 米家：设备执行</td><td>米家设备/场景检索与执行、米家通知</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>融合方式</strong>：与 HA 并行。HA 管 Aqara 与自动化，Miloco 管「摄像头视觉 + 自然语言规则 + 米家」。</p>
+      </div>
+
+      <section class="section-header">
+        <span class="section-icon">🖥️</span>
+        <h2>硬件要求（Miloco 服务器）</h2>
+      </section>
+      <div class="card">
+        <ul class="checklist">
+          <li><strong>CPU</strong>：x64</li>
+          <li><strong>显卡</strong>：NVIDIA 30 系及以上，显存 ≥8GB（建议 12GB+）</li>
+          <li><strong>存储</strong>：≥16GB 可用（本地模型）</li>
+          <li><strong>系统</strong>：Linux（建议 Ubuntu 22.04+）或 Windows 10+ WSL2；macOS 暂不支持</li>
+        </ul>
+        <p>当前 Mini PC N100 无独显，需<strong>单独一台带 NVIDIA GPU 的主机</strong>，或与 Frigate 共用一台 GPU 服务器。</p>
+      </div>
+
+      <section class="section-header">
+        <span class="section-icon">📷</span>
+        <h2>需要的设备（可选）</h2>
+      </section>
+      <div class="card">
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr><th>项目</th><th>说明</th><th>预算参考</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Miloco 服务器</td><td>独显主机（RTX 3060/4060 等 12GB）或与 Frigate 共用</td><td>~2,500–4,500 元</td></tr>
+              <tr><td>米家智能摄像机</td><td>1 台作为 Miloco 视觉源；已有米家/兼容摄像头可尝试复用</td><td>~99–299 元</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p><strong>合计（可选）</strong>：约 2,600–4,800 元。</p>
+      </div>
+
+      <section class="section-header">
+        <span class="section-icon">⚡</span>
+        <h2>一键安装</h2>
+      </section>
+      <div class="card">
+        <p>满足硬件与 Docker 环境后，在 Linux 或 WSL2 中执行：</p>
+        <div class="code-wrapper">
+          <span class="code-label">bash</span>
+          <pre><code>bash -c "$(wget -qO- https://xiaomi-miloco.cnbj1.mi-fds.com/xiaomi-miloco/install.sh)"</code></pre>
+        </div>
+        <p>或克隆仓库后执行 <code>bash scripts/install.sh</code>。</p>
+        <p>详细步骤见官方 <a href="https://github.com/XiaoMi/xiaomi-miloco/tree/main/docs" target="_blank" rel="noopener" class="link">Docker 部署与使用文档</a>。</p>
+      </div>
+
+      <section class="section-header">
+        <span class="section-icon">📄</span>
+        <h2>完整说明</h2>
+      </section>
+      <div class="card">
+        <p>融合思路、与六阶段实施的关系、预算与清单见仓库内 <strong>docs/08-xiaomi-miloco.md</strong>（或 README 第八节）。</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/main.js"></script>
+</body>
+</html>

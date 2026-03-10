@@ -14,6 +14,7 @@
 - [五、分阶段实施路线图](#五分阶段实施路线图)
 - [六、预算总表](#六预算总表)
 - [七、文档索引](#七文档索引)
+- [八、可选：小米 Miloco](#八可选小米-miloco)
 
 ---
 
@@ -32,6 +33,7 @@
 │  ├── Ollama 本地大模型 (DeepSeek/Qwen)                   │
 │  ├── Frigate AI 视频分析                                 │
 │  ├── go2rtc 低延迟视频流                                  │
+│  └── (可选) Xiaomi Miloco 视觉+自然语言规则 [见文档]      │
 │  ├── Snapcast 全屋音乐                                   │
 │  ├── Music Assistant 音乐管理                             │
 │  ├── Pi-Hole 广告拦截                                    │
@@ -563,6 +565,20 @@
 
 **完成后你获得**: 3D 户型图交互控制一切、亚秒级摄像头画面、AI 快递检测。
 
+### 第七阶段（可选）：Xiaomi Miloco 视觉管家
+> 难度: ★★★★☆ | 预算: ~2,600–4,800元（需 NVIDIA GPU 主机 + 米家摄像头） | 与第六阶段可并行
+
+**做什么**: 部署 [Xiaomi Miloco](https://github.com/XiaoMi/xiaomi-miloco)，用摄像头+端侧大模型做视觉理解，用自然语言设家庭规则，联动米家设备/场景。
+
+- 准备一台 **NVIDIA 30 系+ 8GB 显存** 主机（可与 Frigate 共用）
+- Docker 一键安装 Miloco，绑定米家账号与**米家摄像机**为视觉源
+- 用自然语言定义「若…则…」规则，控制米家/Aqara（经米家）设备
+- 端侧模型 MiMo-VL-Miloco-7B 本地视频理解，隐私可控
+
+**完成后你获得**: 看家场景视频问答、自然语言设规则、与现有 HA 方案并存的「视觉+对话」增强。
+
+详见 [小米 Miloco 融合说明](docs/08-xiaomi-miloco.md)。
+
 ---
 
 ## 六、预算总表
@@ -575,6 +591,7 @@
 | 窗帘轨道（如单独购买） | ~1,500元 |
 | **总计** | **~40,700元** |
 | 可选升级（Coral TPU/壁挂平板/FP300/Camera G350/Smart Lock U400） | +700~3,500元 |
+| 可选：Xiaomi Miloco（NVIDIA GPU 主机 + 米家摄像头） | +2,600~4,800元 |
 
 ---
 
@@ -590,3 +607,13 @@
 | 语音助手部署 | [docs/05-voice-assistant.md](docs/05-voice-assistant.md) | 小智ESP32+Ollama部署 |
 | 3D仪表盘制作 | [docs/06-3d-dashboard.md](docs/06-3d-dashboard.md) | 3D交互仪表盘教程 |
 | 布线与安装 | [docs/07-wiring-guide.md](docs/07-wiring-guide.md) | 开关替换/传感器安放位置 |
+| 小米 Miloco 融合 | [docs/08-xiaomi-miloco.md](docs/08-xiaomi-miloco.md) | 视觉+自然语言规则，与 HA 并存 |
+
+---
+
+## 八、可选：小米 Miloco
+
+[Xiaomi Miloco](https://github.com/XiaoMi/xiaomi-miloco) 是小米开源的**本地智能管家**：以米家摄像机为视觉输入，端侧大模型做视频理解，用**自然语言**设家庭规则并控制米家设备。可与本方案**并行**使用（HA 管 Aqara/自动化，Miloco 管视觉+米家）。
+
+- **需要**：一台 **NVIDIA 30 系+ 8GB 显存** 主机（可与 Frigate 共用）、至少 1 台**米家摄像机**（或兼容摄像头）。
+- **实施**：见 [小米 Miloco 融合说明](docs/08-xiaomi-miloco.md)，含硬件清单、部署步骤与预算。
