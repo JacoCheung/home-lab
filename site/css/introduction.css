@@ -1,0 +1,35 @@
+/* Reading styles for the principles introduction; other pages keep their styles. */
+html { scroll-padding-top: 84px; }
+.reading-content { max-width: 1120px; }
+.sidebar-header .book-name { color: var(--text-primary); font-weight: 600; font-size: 1.05rem; }
+.sidebar-header .subtitle { color: var(--text-secondary); }
+.sidebar-nav ul { list-style: none; }
+.sidebar-nav a { line-height: 1.6; }
+.reading-links { padding: 18px 20px; border-top: 1px solid var(--border); }
+.reading-links a { display: block; margin: 5px 0; font-size: .85rem; }
+.prose { max-width: 860px; margin: 0 auto; line-height: 1.95; }
+.prose h1 { font-size: 1.85rem; line-height: 1.45; margin: 8px 0 28px; }
+.prose h2 { font-size: 1.35rem; line-height: 1.5; margin: 42px 0 18px; }
+.prose h3 { font-size: 1.1rem; line-height: 1.5; margin: 28px 0 12px; }
+.prose p { margin: 16px 0; }
+.prose ul, .prose ol { padding-left: 1.5em; margin: 16px 0; }
+.prose li { margin: 8px 0; }
+.prose a { text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.prose em { font-style: normal; color: var(--text-secondary); }
+.prose .table-wrapper { margin: 22px 0; }
+.prose table { line-height: 1.7; min-width: 620px; }
+.prose td, .prose th { vertical-align: top; white-space: normal; }
+.diagram-scroll { overflow-x: auto; margin: 26px 0 10px; }
+.diagram-scroll img { display: block; width: 100%; min-width: 680px; height: auto; }
+.skip-link { position: absolute; left: 16px; top: -100px; background: var(--bg-secondary); padding: 8px 16px; z-index: 200; }
+.skip-link:focus { top: 8px; }
+@media (max-width: 768px) {
+  .reading-content { padding: 22px 20px; }
+  .header .page-title { font-size: .95rem; }
+  .prose h1 { font-size: 1.55rem; }
+  .prose h2 { font-size: 1.25rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .sidebar { transition: none; }
+}

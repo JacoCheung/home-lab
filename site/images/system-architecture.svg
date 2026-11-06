@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 680" role="img" aria-labelledby="arch-title arch-desc">
+  <title id="arch-title">智能家居系统的逻辑角色与通信通路</title>
+  <desc id="arch-desc">交互入口通过本地接口连接控制平台，也可通过云端远程访问。控制平台通过家庭局域网访问 IP 设备，通过 Zigbee 接入软件与网关访问 Zigbee 设备，通过 Thread 边界路由器访问 Thread 设备。实线代表本地通路，虚线代表本图中的云端通路。家庭局域网内的 AP 和交换机被省略。</desc>
+  <defs>
+    <marker id="arch-arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto-start-reverse">
+      <path d="M1 1 L7 4 L1 7" fill="none" stroke="#64748b" stroke-width="1.4"/>
+    </marker>
+    <style>
+      text { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; fill: #1e293b; text-anchor: middle; }
+      .node { fill: #fff; stroke: #cbd5e1; stroke-width: 1.5; }
+      .control { fill: #f0f9ff; stroke: #0ea5e9; stroke-width: 2; }
+      .name { font-size: 24px; font-weight: 500; }
+      .detail { font-size: 20px; fill: #475569; }
+      .edge { fill: none; stroke: #64748b; stroke-width: 1.6; marker-start: url(#arch-arrow); marker-end: url(#arch-arrow); }
+      .remote { stroke-dasharray: 7 6; }
+      .label { font-size: 20px; fill: #475569; }
+    </style>
+  </defs>
+  <rect width="960" height="680" fill="#f8fafc"/>
+
+  <path class="edge" d="M220 105 V145 H480 V195"/>
+  <text class="label" x="330" y="137">本地接口</text>
+  <path class="edge remote" d="M400 65 H560"/>
+  <text class="label" x="480" y="47">远程访问</text>
+  <path class="edge remote" d="M740 105 V235 H640"/>
+  <text class="label" x="812" y="168">云端连接</text>
+
+  <path class="edge" d="M360 275 V325 H190 V390"/>
+  <text class="label" x="190" y="310">Matter / 本地 API</text>
+  <path class="edge" d="M480 275 V390"/>
+  <text class="label" x="554" y="350">接入接口</text>
+  <path class="edge" d="M600 275 V325 H770 V390"/>
+  <text class="label" x="765" y="310">家庭局域网 IPv6</text>
+  <path class="edge" d="M480 470 V555"/>
+  <text class="label" x="538" y="518">Zigbee</text>
+  <path class="edge" d="M770 470 V555"/>
+  <text class="label" x="853" y="518">Thread / IPv6</text>
+
+  <g>
+    <rect class="node" x="40" y="25" width="360" height="80" rx="8"/>
+    <text class="name" x="220" y="59">交互入口</text>
+    <text class="detail" x="220" y="87">手机 App / 墙面控制屏</text>
+    <rect class="node" x="560" y="25" width="360" height="80" rx="8"/>
+    <text class="name" x="740" y="59">云端服务</text>
+    <text class="detail" x="740" y="87">远程接入 / 账号 / 通知</text>
+    <rect class="control" x="320" y="195" width="320" height="80" rx="8"/>
+    <text class="name" x="480" y="229">控制平台</text>
+    <text class="detail" x="480" y="257">设备状态 / 自动化规则</text>
+    <rect class="node" x="70" y="390" width="240" height="80" rx="8"/>
+    <text class="name" x="190" y="424">IP 设备</text>
+    <text class="detail" x="190" y="452">Wi-Fi / 以太网接入</text>
+    <rect class="node" x="360" y="390" width="240" height="80" rx="8"/>
+    <text class="name" x="480" y="424">Zigbee 接入</text>
+    <text class="detail" x="480" y="452">接入软件 / 无线协调器</text>
+    <rect class="node" x="650" y="390" width="240" height="80" rx="8"/>
+    <text class="name" x="770" y="424">Thread 边界路由器</text>
+    <text class="detail" x="770" y="452">IPv6 路由</text>
+    <rect class="node" x="360" y="555" width="240" height="65" rx="8"/>
+    <text class="name" x="480" y="595">Zigbee 设备</text>
+    <rect class="node" x="650" y="555" width="240" height="65" rx="8"/>
+    <text class="name" x="770" y="595">Thread 设备</text>
+  </g>
+  <text class="detail" x="480" y="658">实线：本地通路　　虚线：本图中的云端通路</text>
+</svg>
