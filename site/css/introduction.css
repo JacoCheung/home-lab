@@ -1,6 +1,7 @@
 /* Reading styles for the principles introduction; other pages keep their styles. */
 html { scroll-padding-top: 84px; }
 .reading-content { max-width: 1120px; }
+.header .page-title { margin: 0; line-height: 1.5; }
 .sidebar-header .book-name { color: var(--text-primary); font-weight: 600; font-size: 1.05rem; }
 .sidebar-header .subtitle { color: var(--text-secondary); }
 .sidebar-nav ul { list-style: none; }
@@ -12,6 +13,7 @@ html { scroll-padding-top: 84px; }
 .prose h2 { font-size: 1.35rem; line-height: 1.5; margin: 42px 0 18px; }
 .prose h3 { font-size: 1.1rem; line-height: 1.5; margin: 28px 0 12px; }
 .prose p { margin: 16px 0; }
+.prose .section-label { margin-top: 32px; }
 .prose ul, .prose ol { padding-left: 1.5em; margin: 16px 0; }
 .prose li { margin: 8px 0; }
 .prose a { text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }

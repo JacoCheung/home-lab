@@ -7,7 +7,6 @@ import sys
 
 try:
     import markdown
-    from markdown.extensions.toc import TocExtension, slugify_unicode
 except ImportError:
     sys.exit("Install documentation dependencies: python -m pip install -r requirements-docs.txt")
 
@@ -22,10 +21,25 @@ def build():
         extensions=[
             "tables",
             "fenced_code",
-            TocExtension(slugify=slugify_unicode, toc_depth="2-2"),
         ]
     )
     article = converter.convert(SOURCE.read_text(encoding="utf-8"))
+    article = re.sub(
+        r'<pre><code class="language-mermaid">.*?</code></pre>',
+        '<p><img src="images/system-architecture.svg" alt="智能家居系统逻辑结构图"></p>',
+        article,
+        flags=re.DOTALL,
+    )
+    navigation = []
+
+    def add_section_anchor(match):
+        label = match.group(1)
+        anchor = f"section-{len(navigation) + 1}"
+        navigation.append(f'<li><a href="#{anchor}">{label}</a></li>')
+        return f'<p class="section-label" id="{anchor}"><strong>{label}</strong></p>'
+
+    article = re.sub(r"<p><strong>([^<]+)</strong></p>", add_section_anchor, article)
+    toc = '<div class="toc"><ul>\n' + "\n".join(navigation) + "\n</ul></div>"
     article = article.replace('src="../site/images/', 'src="images/')
     article = article.replace("<table>", '<div class="table-wrapper"><table>')
     article = article.replace("</table>", "</table></div>")
@@ -40,7 +54,7 @@ def build():
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="从开门亮灯追踪智能家居系统的设备、通信网络、协议接入、控制平台与云端依赖。">
+  <meta name="description" content="智能家居系统的设备、通信网络、协议接入、控制平台、交互入口与云端服务，以及各部分之间的通信链路和协议。">
   <title>智能家居系统原理设计 | 系统组成与通信</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/introduction.css">
@@ -65,7 +79,7 @@ __TOC__
   <main class="main">
     <header class="header">
       <button class="hamburger" aria-label="打开阅读目录" aria-controls="reading-menu" aria-expanded="false">☰</button>
-      <p class="page-title">智能家居系统原理设计</p>
+      <h1 class="page-title">智能家居系统原理设计</h1>
     </header>
     <div class="content reading-content">
       <article class="prose" id="introduction">
@@ -97,7 +111,7 @@ __ARTICLE__
 </html>
 """
     TARGET.write_text(
-        page.replace("__TOC__", converter.toc).replace("__ARTICLE__", article),
+        page.replace("__TOC__", toc).replace("__ARTICLE__", article),
         encoding="utf-8",
     )
     print(f"Generated {TARGET.relative_to(ROOT)} from {SOURCE.relative_to(ROOT)}")
